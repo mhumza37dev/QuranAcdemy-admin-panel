@@ -7,6 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/creativetimofficial/argon-dashboard-react.git"
   },
+  "homepage": "https://mhumza37dev.github.io/QuranAcdemy-admin-panel",
    "engines" : { "node" : ">=10.0.0" } ,
   "keywords": [
     "react",
@@ -23,7 +24,6 @@
   "bugs": {
     "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
   },
-  "homepage": "https://demos.creative-tim.com/argon-dashboard-react/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
