@@ -35,10 +35,13 @@ const Login = () => {
                   href="https://www.creative-tim.com?ref=adr-auth-footer"
                   target="_blank"
                 >
-                  Creative Tim
+                  ReignSol.
                 </a>
               </div>
             </Col>
+
+            {/* 
+
             <Col xl="6">
               <Nav className="nav-footer justify-content-center justify-content-xl-end">
                 <NavItem>
@@ -75,6 +78,8 @@ const Login = () => {
                 </NavItem>
               </Nav>
             </Col>
+         
+          */}
           </Row>
         </Container>
       </footer>

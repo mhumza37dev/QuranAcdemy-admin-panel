@@ -70,7 +70,7 @@ const Login = (props) => {
       }, 3000);
     } else {
       const response = await fetch(
-        "http://192.168.18.5:3005/admin/forgot-password",
+        "https://quran-server.herokuapp.com/admin/forgot-password",
         {
           method: "POST",
           dataType: "JSON",

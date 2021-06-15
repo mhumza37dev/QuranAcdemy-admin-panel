@@ -22,29 +22,13 @@ import {
   Col,
   Button as BT,
 } from "reactstrap";
-// core components
 
-const Classes = () => {
-  const [fetchedClasses, setFetchedClasses] = useState();
-  const [currentAdmin, setCurrentAdmin] = useState();
-  const [show, setShow] = useState(false);
-  const [adminId, setAdminId] = useState("");
-
-  useEffect(() => {
-    console.log("sss");
-    fetch("https://quran-server.herokuapp.com/class/")
-      .then((res) => res.json())
-      .then((res) => {
-        setFetchedClasses(res);
-        setCurrentAdmin(JSON.parse(localStorage.getItem("user")));
-      });
-  }, []);
+function AssignPermissions(props) {
+  const [aaa, setaaa] = useState([]);
 
   return (
     <>
       <div className="header bg-gradient-dark pb-8 pt-5 pt-md-8"></div>
-      {/* <Header /> */}
-      {/* Page content */}
       <Container className="mt--7" fluid>
         {/* Table */}
         <Row>
@@ -53,28 +37,22 @@ const Classes = () => {
               <CardHeader className="border-0">
                 <Row xl="2">
                   <Col>
-                    <h3 className="mb-0">Classes</h3>
+                    <h3 className="mb-0">Assign Permissions</h3>
                   </Col>
                 </Row>
               </CardHeader>
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">Teacher</th>
-                    <th scope="col">Time Slot</th>
-                    <th scope="col">Days</th>
-                    <th scope="col">Subscription Type</th>
-                    <th scope="col">Fees</th>
-                    <th scope="col">Duration</th>
-                    <th scope="col">Student Limit</th>
-                    <th scope="col">Enroled Students</th>
+                    <th scope="col">Module</th>
+                    <th scope="col">Permissions</th>
+
                     <th scope="col" />
                   </tr>
                 </thead>
                 <tbody>
-                  {fetchedClasses !== undefined &&
-                    fetchedClasses.map((data) => (
+                  {aaa !== undefined &&
+                    aaa.map((data) => (
                       <tr>
                         <th scope="row">
                           <Media className="align-items-center">
@@ -144,6 +122,6 @@ const Classes = () => {
       </Container>
     </>
   );
-};
+}
 
-export default Classes;
+export default AssignPermissions;

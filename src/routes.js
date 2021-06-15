@@ -22,7 +22,14 @@ import Register from "views/examples/Register.js";
 import Admins from "views/examples/Admins.js";
 import Teacher from "views/examples/Teacher.js";
 import Icons from "views/examples/Icons.js";
+import AddAdmins from "views/examples/AddAdmins";
+import Classes from "views/examples/Classes";
+import Page404 from "views/examples/Page404";
+import AddPermissions from "views/examples/AddPermissions";
+import Permissions from "views/examples/Permissions";
+import AddClasses from "views/examples/AddClasses";
 
+import AssignPermissions from "views/examples/AssignPermissions";
 var routes = [
   {
     path: "/index",
@@ -46,10 +53,17 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/classes",
-    name: "Classes",
+    path: "/View Classes",
+    name: "View Classes",
     icon: "ni ni-single-02 text-yellow",
-    component: Profile,
+    component: Classes,
+    layout: "/admin",
+  },
+  {
+    path: "/Add Classes",
+    name: "Add Classes",
+    icon: "ni ni-single-02 text-yellow",
+    component: AddClasses,
     layout: "/admin",
   },
   {
@@ -60,11 +74,48 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/admins",
+    path: "/View Admins",
     name: "Admins",
     icon: "ni ni-bullet-list-67 text-red",
     component: Admins,
     layout: "/admin",
   },
+  {
+    path: "/Vew Permissions",
+    name: "Permissions",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: Permissions,
+    layout: "/admin",
+  },
+  {
+    path: "/Add Permissions",
+    name: "Add Permissions",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: AddPermissions,
+    layout: "/admin",
+  },
+  {
+    path: "/Assign Permissions",
+    name: "Assign Permissions",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: AssignPermissions,
+    layout: "/admin",
+  },
+  {
+    path: "/Add Admins",
+    name: "Add Admins",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: AddAdmins,
+    layout: "/admin",
+  },
+
+  {
+    path: "/404",
+    // name: "Not Found",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: Page404,
+    layout: "/admin",
+  },
 ];
+
 export default routes;

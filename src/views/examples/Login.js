@@ -43,6 +43,7 @@ const Login = (props) => {
   const [open, setOpen] = React.useState(false);
 
   if (JSON.parse(localStorage.getItem("user"))) {
+    console.log("aaa");
     props.history.push("/admin/index", localStorage.getItem("user"));
   } else {
   }
@@ -85,13 +86,13 @@ const Login = (props) => {
       }, 3000);
     } else {
       const response = await fetch(
-        "http://192.168.18.5:3005/admin/authenticate",
+        "https://quran-server.herokuapp.com/admin/authenticate",
         {
           method: "POST",
           dataType: "JSON",
           headers: {
             "Content-Type": "application/json; charset=utf-8",
-            "Access-Control-Allow-Origin": "all",
+            "Access-Control-Allow-Origin": "*",
           },
           body: JSON.stringify({ email: email, password: pass }),
         }
@@ -100,9 +101,10 @@ const Login = (props) => {
       console.log(userr);
       // setUser(userr);
 
-      localStorage.setItem("user", JSON.stringify(userr.account));
-
       if (userr.account) {
+        localStorage.setItem("user", JSON.stringify(userr));
+        localStorage.setItem("lastCallAt", Date.now());
+
         console.log(userr.account);
         props.history.push("/admin", JSON.parse(localStorage.getItem("user")));
       } else if (userr.message === "Email or password is incorrect") {

@@ -1,22 +1,6 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
+import moment from "moment";
 // reactstrap components
 import { Container } from "reactstrap";
 // core components
@@ -37,16 +21,16 @@ const Admin = (props) => {
     setState(JSON.parse(localStorage.getItem("user")));
   }, []);
 
-  useEffect(() => {
-    if (props.location.state !== undefined) {
-      document.documentElement.scrollTop = 0;
-      document.scrollingElement.scrollTop = 0;
-      mainContent.current.scrollTop = 0;
-    } else {
-    }
+  // useEffect(() => {
+  //   if (props.location.state !== undefined) {
+  //     document.documentElement.scrollTop = 0;
+  //     document.scrollingElement.scrollTop = 0;
+  //     mainContent.current.scrollTop = 0;
+  //   } else {
+  //   }
 
-    console.log(" state ====> ", state);
-  }, [location]);
+  //   console.log(" state ====> ", state);
+  // }, [location]);
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
@@ -76,8 +60,29 @@ const Admin = (props) => {
     return "Brand";
   };
 
+  // console.log("aaa", localStorage.getItem("lastCallAt"));
+  // console.log(moment().format());
+  // console.log(moment("20111031", "YYYYMMDD").startOf("hour").fromNow());
+
+  const startDate = moment(parseInt(localStorage.getItem("lastCallAt")));
+  const timeEnd = moment(Date.now());
+  const diff = timeEnd.diff(startDate);
+
+  // console.log(moment(startDate));
+
+  const diffDuration = moment.duration(diff);
+  // console.log("last call at :", startDate._i);
+  // console.log("time rightnow :", timeEnd._i);
+  console.log("Minutes since last call:", diffDuration.minutes());
+  timeEnd.diff(startDate);
+
+  if (diffDuration.minutes() >= 10) {
+    localStorage.clear();
+    // props.history.push("/auth/signin");
+  }
+
   if (!JSON.parse(localStorage.getItem("user"))) {
-    props.history.push("/auth/signin");
+    props.history.push("/auth");
     return <></>;
   } else {
     const name = JSON.parse(localStorage.getItem("user"));
@@ -96,7 +101,7 @@ const Admin = (props) => {
           <AdminNavbar
             {...props}
             brandText={getBrandText(props.location.pathname)}
-            name={name.firstName}
+            name={name.account.firstName}
           />
           <Switch>
             {getRoutes(routes)}

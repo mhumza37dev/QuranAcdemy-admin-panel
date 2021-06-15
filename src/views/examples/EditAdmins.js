@@ -67,21 +67,19 @@ const Admins = (props) => {
   });
 
   let admin = JSON.parse(localStorage.getItem("user"));
-  if (
-    !admin.permissionss.includes("View Admins") &&
-    admin.account.super === false
-  ) {
+  if (!admin.permissionss.includes("view admins")) {
     props.history.push("/admin/404");
   }
 
   useEffect(() => {
+    console.log("sss");
     fetch("https://quran-server.herokuapp.com/admin/")
       .then((res) => res.json())
       .then((res) => {
         setFetchedAdmins(res);
         setCurrentAdmin(JSON.parse(localStorage.getItem("user")));
       });
-  }, [fetchedAdmins]);
+  }, []);
 
   const edit = () => {
     console.log(currentAdmin.jwtToken);
@@ -114,7 +112,6 @@ const Admins = (props) => {
           console.log(res);
           setMessage(res.message);
           if (res.message === "Successfully Updated") {
-            localStorage.setItem("lastCallAt", Date.now);
             setAlertType("success");
             setOpen(true);
             setTimeout(() => {
@@ -150,29 +147,7 @@ const Admins = (props) => {
     }
   };
 
-  const deleteAdmin = () => {
-    console.log("delete function start");
-    fetch(`https://quran-server.herokuapp.com/admin/block/${adminId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log("response===> ", res);
-        setMessage(res.message);
-        if (res.message === "Account deleted successfully") {
-          localStorage.setItem("lastCallAt", Date.now);
-          setAlertType("success");
-          setOpen(true);
-          setAdminId("");
-        } else {
-          setAlertType("danger");
-          setOpen(true);
-        }
-      });
-  };
+  const editAdmin = () => {};
 
   const displayStates = () => {
     // console.log({
@@ -208,22 +183,11 @@ const Admins = (props) => {
         </Modal.Header>
         <Modal.Body>
           <div>
-            <Alert
-              color={alertType}
-              isOpen={open}
-              onClick={() => setOpen(false)}
-            >
+            <Alert color={alertType} isOpen={open}>
               {message}
             </Alert>
             <div>
               <div className="container justify-content-center">
-                <Alert
-                  color={alertType}
-                  isOpen={open}
-                  onClick={() => setOpen(false)}
-                >
-                  {message}
-                </Alert>
                 <div className="pb-5">
                   <h1 className="font-weight-bold fs">Update Admin</h1>
                   <div
@@ -411,48 +375,28 @@ const Admins = (props) => {
                               </Badge>
                             </td>
 
-                            {currentAdmin !== undefined ? (
-                              currentAdmin.account.super === true ||
-                              currentAdmin.permissionss.includes(
-                                "Edit Admins"
-                              ) ? (
-                                <td
-                                  onClick={() => {
-                                    setAdminId(data.id);
+                            <td
+                              onClick={() => {
+                                setAdminId(data.id);
 
-                                    handleShow();
-                                  }}
-                                  className="icon-btn"
-                                >
-                                  <FontAwesomeIcon
-                                    className="btn-icon-only"
-                                    icon={faEdit}
-                                  />
-                                </td>
-                              ) : (
-                                <td></td>
-                              )
-                            ) : null}
+                                handleShow();
+                              }}
+                              className="icon-btn"
+                            >
+                              <FontAwesomeIcon
+                                className="btn-icon-only"
+                                icon={faEdit}
+                              />
+                            </td>
 
-                            {currentAdmin !== undefined ? (
-                              currentAdmin.account.super === true ||
-                              currentAdmin.permissionss.includes(
-                                "Delete Admins"
-                              ) ? (
-                                <td
-                                  className="icon-btn"
-                                  onClick={() => {
-                                    setAdminId(data.id);
-                                    alert(data.id);
-                                    deleteAdmin();
-                                  }}
-                                >
-                                  <FontAwesomeIcon icon={faTrash} />
-                                </td>
-                              ) : (
-                                <td></td>
-                              )
-                            ) : null}
+                            <td
+                              className="icon-btn"
+                              onClick={() => {
+                                alert(data.id);
+                              }}
+                            >
+                              <FontAwesomeIcon icon={faTrash} />
+                            </td>
                           </tr>
                         ) : null
                       )}

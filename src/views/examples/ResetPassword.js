@@ -28,7 +28,6 @@ import {
   InputGroupAddon,
   InputGroupText,
   InputGroup,
-  Row,
   Col,
   Alert,
 } from "reactstrap";
@@ -61,7 +60,7 @@ const Login = (props) => {
     return () => {
       document.removeEventListener("keydown", listener);
     };
-  }, [pass, ConfirmPass]);
+  }, []);
 
   useEffect(() => {
     const value = queryString.parse(props.location.search);
@@ -101,13 +100,14 @@ const Login = (props) => {
       }, 3000);
     } else {
       const response = await fetch(
-        (body = "http://192.168.18.5:3005/admin/reset-password"),
+        (body = "https://quran-server.herokuapp.com/admin/reset-password"),
         {
           method: "POST", // *GET, POST, PUT, DELETE, etc.
+          dataType: "JSON",
           headers: {
             "Content-Type": "application/json; charset=utf-8",
+            "Access-Control-Allow-Origin": "*",
           },
-          dataType: "JSON",
           body: body,
         }
       );

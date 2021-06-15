@@ -1,62 +1,57 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-/*eslint-disable*/
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink as NavLinkRRD, Link } from "react-router-dom";
+import Index from "views/Index.js";
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
 
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import IconExpandLess from "@material-ui/icons/ExpandLess";
+import IconExpandMore from "@material-ui/icons/ExpandMore";
+import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from "@material-ui/icons/Remove";
+import { Collapse as CL } from "@material-ui/core";
+
 // reactstrap components
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
   Collapse,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Media,
   NavbarBrand,
   Navbar,
   NavItem,
   NavLink,
   Nav,
-  Progress,
-  Table,
   Container,
   Row,
   Col,
 } from "reactstrap";
 
+import Divider from "@material-ui/core/Divider";
+
 var ps;
 
 const Sidebar = (props) => {
+  const [admin, setAdmin] = useState();
   const [collapseOpen, setCollapseOpen] = useState();
+  const [open, setOpen] = React.useState(false);
+
+  const [open2, setOpen2] = React.useState(false);
+  const [open3, setOpen3] = React.useState(false);
+  const [open4, setOpen4] = React.useState(false);
+  const [open5, setOpen5] = React.useState(false);
   // verifies if routeName is the one active (in browser input)
+
+  useEffect(() => {
+    setAdmin(JSON.parse(localStorage.getItem("user")));
+    console.log("zzzzzz", admin);
+  }, []);
+
   const activeRoute = (routeName) => {
     return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
   };
@@ -68,6 +63,36 @@ const Sidebar = (props) => {
   const closeCollapse = () => {
     setCollapseOpen(false);
   };
+
+  function handleClick() {
+    setOpen(!open);
+  }
+
+  function handleAdminDrop() {
+    setOpen2(!open2);
+  }
+
+  function handleClassDrop() {
+    setOpen3(!open3);
+  }
+
+  function handleRolesDrop() {
+    setOpen4(!open4);
+  }
+
+  function handlePermDrop() {
+    setOpen5(!open5);
+  }
+
+  var rout = [
+    {
+      path: "/index",
+      name: "Dashboard",
+      icon: "ni ni-tv-2 text-primary",
+      component: Index,
+      layout: "/admin",
+    },
+  ];
   // creates the links that appear in the left menu / Sidebar
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
@@ -79,8 +104,12 @@ const Sidebar = (props) => {
             onClick={closeCollapse}
             activeClassName="active"
           >
-            <i className={prop.icon} />
-            {prop.name}
+            <ListItem button>
+              <ListItemIcon>
+                <i className={prop.icon} />
+              </ListItemIcon>
+              <ListItemText primary={prop.name} />
+            </ListItem>
           </NavLink>
         </NavItem>
       );
@@ -126,6 +155,7 @@ const Sidebar = (props) => {
             />
           </NavbarBrand>
         ) : null}
+        <Divider />
         {/* User */}
         <Nav className="align-items-center d-md-none">
           <UncontrolledDropdown nav>
@@ -215,48 +245,254 @@ const Sidebar = (props) => {
               </Col>
             </Row>
           </div>
-          {/* Form */}
-          <Form className="mt-4 mb-3 d-md-none">
-            <InputGroup className="input-group-rounded input-group-merge">
-              <Input
-                aria-label="Search"
-                className="form-control-rounded form-control-prepended"
-                placeholder="Search"
-                type="search"
-              />
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  <span className="fa fa-search" />
-                </InputGroupText>
-              </InputGroupAddon>
-            </InputGroup>
-          </Form>
-          {/* Navigation */}
-          <Nav navbar>{createLinks(routes)}</Nav>
-          {/* Divider */}
-          <hr className="my-3" />
-          {/* Heading */}
-          <h6 className="navbar-heading text-muted">Documentation</h6>
-          {/* Navigation */}
-          <Nav className="mb-md-3" navbar>
-            <NavItem>
-              <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/overview?ref=adr-admin-sidebar">
-                <i className="ni ni-spaceship" />
-                Getting started
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/colors?ref=adr-admin-sidebar">
-                <i className="ni ni-palette" />
-                Foundation
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/alerts?ref=adr-admin-sidebar">
-                <i className="ni ni-ui-04" />
-                Components
-              </NavLink>
-            </NavItem>
+          <Nav navbar>
+            {createLinks(rout)}
+            {/* <ListItem button onClick={handleClick}>
+              <ListItemText primary="Manage Settings" />
+              {open ? <IconExpandLess /> : <IconExpandMore />}
+            </ListItem> */}
+            {/*parent condion start*/}
+            {admin !== undefined ? (
+              admin.account.account.super === true ||
+              admin.permissionss.includes("View Admins") ||
+              admin.permissionss.includes("Add Admins") ? (
+                <NavItem>
+                  <NavLink>
+                    <ListItem button onClick={handleAdminDrop}>
+                      <ListItemIcon>
+                        <i class="fas fa-user-shield text-primary"></i>
+                      </ListItemIcon>
+                      <ListItemText primary="Admins" />
+                      {open2 ? (
+                        <RemoveIcon style={{ paddingLeft: "10px" }} />
+                      ) : (
+                        <AddIcon style={{ paddingLeft: "10px" }} />
+                      )}
+                    </ListItem>
+                  </NavLink>
+
+                  <CL in={open2} timeout="auto" unmountOnExit>
+                    {admin.account.account.super === true ||
+                    admin.permissionss.includes("View Admins") ? (
+                      <NavItem>
+                        <NavLink
+                          to={"/admin/View Admins"}
+                          tag={NavLinkRRD}
+                          onClick={closeCollapse}
+                          activeClassName="active"
+                        >
+                          <ListItem button>
+                            <ListItemText primary="View Admins" />
+                          </ListItem>
+                        </NavLink>
+                      </NavItem>
+                    ) : null}
+
+                    {admin.account.account.super === true ||
+                    admin.permissionss.includes("Add Admins") ? (
+                      <NavItem>
+                        <NavLink
+                          to={"/admin/Add Admins"}
+                          tag={NavLinkRRD}
+                          onClick={closeCollapse}
+                          activeClassName="active"
+                        >
+                          <ListItem button>
+                            <ListItemText primary="Add Admins" />
+                          </ListItem>
+                        </NavLink>
+                      </NavItem>
+                    ) : null}
+                  </CL>
+                </NavItem>
+              ) : null
+            ) : null}
+
+            {admin !== undefined ? (
+              admin.account.account.super === true ||
+              admin.permissionss.includes("Vew Permissions") ||
+              admin.permissionss.includes("add permissions") ? (
+                <NavItem>
+                  <NavLink>
+                    <ListItem button onClick={handlePermDrop}>
+                      <ListItemIcon>
+                        <i class="fas fa-cogs text-primary"></i>
+                      </ListItemIcon>
+                      <ListItemText primary="Permissions" />
+                      {open5 ? (
+                        <RemoveIcon style={{ paddingLeft: "10px" }} />
+                      ) : (
+                        <AddIcon style={{ paddingLeft: "10px" }} />
+                      )}
+                    </ListItem>
+                  </NavLink>
+
+                  <CL in={open5} timeout="auto" unmountOnExit>
+                    {admin.account.account.super === true ||
+                    admin.permissionss.includes("Vew Permissions") ? (
+                      <List>
+                        <NavLink
+                          to={"/admin/Vew Permissions"}
+                          tag={NavLinkRRD}
+                          onClick={closeCollapse}
+                          activeClassName="active"
+                        >
+                          <ListItem button>
+                            <ListItemText primary="Vew Permissions" />
+                          </ListItem>
+                        </NavLink>
+                      </List>
+                    ) : null}
+
+                    {admin.account.account.super === true ||
+                    admin.permissionss.includes("ADD Permissions") ? (
+                      <NavItem>
+                        <NavLink
+                          to={"/admin/Add Permissions"}
+                          tag={NavLinkRRD}
+                          onClick={closeCollapse}
+                          activeClassName="active"
+                        >
+                          <ListItem button>
+                            <ListItemText primary="Add permissions" />
+                          </ListItem>
+                        </NavLink>
+                      </NavItem>
+                    ) : null}
+
+                    {admin.account.account.super === true ||
+                    admin.permissionss.includes("Assign Permissions") ? (
+                      <NavItem>
+                        <NavLink
+                          to={"/admin/Assign Permissions"}
+                          tag={NavLinkRRD}
+                          onClick={closeCollapse}
+                          activeClassName="active"
+                        >
+                          <ListItem button>
+                            <ListItemText primary="Assign permissions" />
+                          </ListItem>
+                        </NavLink>
+                      </NavItem>
+                    ) : null}
+                  </CL>
+                </NavItem>
+              ) : null
+            ) : null}
+
+            {admin !== undefined ? (
+              admin.account.account.super === true ||
+              admin.permissionss.includes("view roles") ||
+              admin.permissionss.includes("add roles") ? (
+                <NavItem>
+                  <NavLink>
+                    <ListItem button onClick={handleRolesDrop}>
+                      <ListItemIcon>
+                        <i class="fas fa-user-tag text-primary"></i>
+                      </ListItemIcon>
+                      <ListItemText primary="Roles" />
+                      {open4 ? (
+                        <RemoveIcon style={{ paddingLeft: "10px" }} />
+                      ) : (
+                        <AddIcon style={{ paddingLeft: "10px" }} />
+                      )}
+                    </ListItem>
+                  </NavLink>
+
+                  <CL in={open4} timeout="auto" unmountOnExit>
+                    {admin.account.account.super === true ||
+                    admin.permissionsss.includes("view roles") ? (
+                      <NavItem>
+                        <NavLink
+                          to={"/admin/view roles"}
+                          tag={NavLinkRRD}
+                          onClick={closeCollapse}
+                          activeClassName="active"
+                        >
+                          <ListItem button>
+                            <ListItemText primary="View roles" />
+                          </ListItem>
+                        </NavLink>
+                      </NavItem>
+                    ) : null}
+
+                    {admin.account.account.super === true ||
+                    admin.permissions.includes("add roles") ? (
+                      <NavItem>
+                        <NavLink
+                          to={"/admin/add roles"}
+                          tag={NavLinkRRD}
+                          onClick={closeCollapse}
+                          activeClassName="active"
+                        >
+                          <ListItem button>
+                            <ListItemText primary="Add roles" />
+                          </ListItem>
+                        </NavLink>
+                      </NavItem>
+                    ) : null}
+                  </CL>
+                </NavItem>
+              ) : null
+            ) : null}
+
+            {admin !== undefined ? (
+              admin.account.account.super === true ||
+              admin.permissionss.includes("View Classes") ||
+              admin.permissionss.includes("Add Classes") ? (
+                <NavItem>
+                  <NavLink>
+                    <ListItem button onClick={handleClassDrop}>
+                      <ListItemIcon>
+                        <i class="fas fa-chalkboard-teacher text-primary"></i>
+                      </ListItemIcon>
+
+                      <ListItemText primary="Classes" />
+                      {open3 ? (
+                        <RemoveIcon style={{ paddingLeft: "10px" }} />
+                      ) : (
+                        <AddIcon style={{ paddingLeft: "10px" }} />
+                      )}
+                    </ListItem>
+                  </NavLink>
+                  <CL in={open3} timeout="auto" unmountOnExit>
+                    {admin.account.account.super === true ||
+                    admin.permissionss.includes("View Classes") ? (
+                      <List>
+                        <NavLink
+                          to={"/admin/View Classes"}
+                          tag={NavLinkRRD}
+                          onClick={closeCollapse}
+                          activeClassName="active"
+                        >
+                          <ListItem button>
+                            <ListItemText primary="View Classes" />
+                          </ListItem>
+                        </NavLink>
+                      </List>
+                    ) : null}
+
+                    {admin.account.account.super === true ||
+                    admin.permissionss.includes("Add Classes") ? (
+                      <NavItem>
+                        <NavLink
+                          to={"/admin/Add Classes"}
+                          tag={NavLinkRRD}
+                          onClick={closeCollapse}
+                          activeClassName="active"
+                        >
+                          <ListItem button>
+                            <ListItemText primary="Add Classes" />
+                          </ListItem>
+                        </NavLink>
+                      </NavItem>
+                    ) : null}
+                  </CL>
+                </NavItem>
+              ) : null
+            ) : null}
+
+            {/*parent condion close*/}
           </Nav>
         </Collapse>
       </Container>

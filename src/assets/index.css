@@ -1,0 +1,141 @@
+.icon-btn > svg:hover {
+  cursor: pointer;
+  /* padding: 30px; */
+}
+.icon-btn {
+  /* color: black; */
+}
+
+.add-btn {
+  background: rgb(94, 114, 228);
+  color: white;
+  padding: 6px 50px;
+  /* width: 50%; */
+  /* background-color: #333; */
+  border: 2px solid #555;
+  margin-top: 20px;
+}
+
+.four {
+  box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.16) inset,
+    0px 0px 10px 0px #33e7ea;
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from rgb(94, 114, 228),
+      to(rgba(161, 245, 245, 0.24))
+    ),
+    url("https://cdn2.itpro.co.uk/sites/itpro/files/server_room.jpg");
+  background-image: linear-gradient(
+      to bottom,
+      #33e7ea,
+      rgba(161, 245, 245, 0.24)
+    ),
+    url("https://cdn2.itpro.co.uk/sites/itpro/files/server_room.jpg");
+}
+.four:hover {
+  box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.16) inset,
+    0px 0px 30px 0px #33e7ea;
+}
+.four:hover:after {
+  -webkit-transform: rotate(3000deg);
+  transform: rotate(3000deg);
+}
+.four:hover:before {
+  -webkit-transform: rotate(360deg);
+  transform: rotate(360deg);
+}
+.four:after,
+.four:before {
+  content: "";
+}
+.four b {
+  color: #1cf4ff;
+  font-weight: 700;
+}
+
+.span {
+  position: relative;
+  display: inline-flex;
+  width: 180px;
+  height: 55px;
+  margin: 0 15px;
+  perspective: 1000px;
+}
+.span a {
+  font-size: 19px;
+  letter-spacing: 1px;
+  transform-style: preserve-3d;
+  transform: translateZ(-25px);
+  transition: transform 0.25s;
+  font-family: "Montserrat", sans-serif;
+}
+.span a:before,
+.span a:after {
+  position: absolute;
+  content: "Add";
+  height: 55px;
+  width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid black;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+.span a:before {
+  color: #fff;
+  background: #000;
+  transform: rotateY(0deg) translateZ(25px);
+}
+.span a:after {
+  color: #000;
+  transform: rotateX(90deg) translateZ(25px);
+}
+.span a:hover {
+  transform: translateZ(-25px) rotateX(-90deg);
+}
+
+#handboy {
+  animation: swing ease-in-out 1.3s infinite alternate;
+  transform-origin: 98% 98%;
+  transform-box: fill-box;
+}
+
+#girllight {
+  animation: swing ease-in-out 1.3s infinite alternate;
+  transform-origin: 0% 97%;
+  transform-box: fill-box;
+}
+
+#hairgirl {
+  animation: swinghair ease-in-out 1.3s infinite alternate;
+  transform-origin: 60% 0%;
+  transform-box: fill-box;
+}
+
+#zero {
+  transform-origin: bottom;
+  transform-box: fill-box;
+}
+
+/*************swing************/
+@keyframes swing {
+  0% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(-10deg);
+  }
+}
+
+/*************swing hair************/
+@keyframes swinghair {
+  0% {
+    transform: rotate(6deg);
+  }
+  100% {
+    transform: rotate(-6deg);
+  }
+}

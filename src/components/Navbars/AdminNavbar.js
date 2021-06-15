@@ -89,7 +89,8 @@ const AdminNavbar = (props) => {
                 </DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem
-                  onClick={(e) => {
+                  onClick={() => {
+                    console.log("logout clicked");
                     localStorage.clear();
                     props.history.push("/auth/signin");
                   }}
