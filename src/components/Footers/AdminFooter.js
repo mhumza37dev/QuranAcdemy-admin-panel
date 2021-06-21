@@ -30,7 +30,7 @@ const Footer = () => {
             © {new Date().getFullYear()}{" "}
             <a
               className="font-weight-bold ml-1"
-              href="https://www.creative-tim.com?ref=adr-admin-footer"
+              href="https://www.reignsol.com/"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -45,7 +45,7 @@ const Footer = () => {
           <Nav className="nav-footer justify-content-center justify-content-xl-end">
             <NavItem>
               <NavLink
-                href="https://www.creative-tim.com?ref=adr-admin-footer"
+                href="https://www.reignsol.com/"
                 rel="noopener noreferrer"
                 target="_blank"
               >

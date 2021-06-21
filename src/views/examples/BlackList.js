@@ -15,6 +15,10 @@ import {
   CardHeader,
   CardFooter,
   Media,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  Progress,
   Table,
   Container,
   Row,
@@ -57,26 +61,29 @@ const Admins = (props) => {
   });
 
   let admin = JSON.parse(localStorage.getItem("user"));
-  if (!admin.permissionss.includes("view adfmins")) {
+  if (
+    !admin.permissionss.includes("View Admins") &&
+    admin.account.super === false
+  ) {
     props.history.push("/admin/404");
   }
 
   useEffect(() => {
-    console.log("sss");
     fetch(`https://quran-server.herokuapp.com/admin/`)
       .then((res) => res.json())
       .then((res) => {
         setFetchedAdmins(res);
         setCurrentAdmin(JSON.parse(localStorage.getItem("user")));
       });
-  }, []);
+  }, [fetchedAdmins]);
 
   const edit = () => {
     console.log(currentAdmin.account.jwtToken);
     // setAdminId(a);
     let url = `https://quran-server.herokuapp.com/admin/${adminId}`;
-    if (adminId !== "" || adminID !== undefined) {
-      console.log("url===>", url);
+    if (adminId !== "") {
+      console.log(url);
+
       fetch(url, {
         method: "PUt",
         dataType: "JSON",
@@ -98,45 +105,69 @@ const Admins = (props) => {
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log("response===>", res);
+          console.log(res);
           setMessage(res.message);
           if (res.message === "Successfully Updated") {
+            localStorage.setItem("lastCallAt", Date.now());
             setAlertType("success");
             setOpen(true);
             setTimeout(() => {
-              setOpen(false);
-            }, 5000);
+              handleShow();
+            }, 1000);
           } else if (res.message === "Email is already in use") {
             setAlertType("warning");
             setOpen(true);
-            setTimeout(() => {
-              setOpen(false);
-            }, 5000);
+            // setTimeout(() => {
+            //   setOpen(false);
+            // }, 5000);
           } else if (res.message === "Phone Number is already in use") {
             setAlertType("warning");
             setOpen(true);
-            setTimeout(() => {
-              setOpen(false);
-            }, 5000);
+            // setTimeout(() => {
+            //   setOpen(false);
+            // }, 5000);
           } else {
             setAlertType("danger");
             setOpen(true);
-            setTimeout(() => {
-              setOpen(false);
-            }, 5000);
+            // setTimeout(() => {
+            //   setOpen(false);
+            // }, 5000);
           }
         });
     } else {
       setMessage("Wait a minute !!!! who are you ?????");
       setAlertType("danger");
       setOpen(true);
-      setTimeout(() => {
-        setOpen(false);
-      }, 5000);
+      // setTimeout(() => {
+      //   setOpen(false);
+      // }, 5000);
     }
   };
 
-  const editAdmin = () => {};
+  const deleteAdmin = () => {
+    console.log("delete function start");
+    fetch(`https://quran-server.herokuapp.com/admin/admin/block/${adminId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        Authorization: `Bearer ${currentAdmin.account.jwtToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("response===> ", res);
+        setMessage(res.message);
+        if (res.message === "Account deleted successfully") {
+          localStorage.setItem("lastCallAt", Date.now());
+          setAlertType("success");
+          setOpen(true);
+          setAdminId("");
+        } else {
+          setAlertType("danger");
+          setOpen(true);
+        }
+      });
+  };
 
   const displayStates = () => {
     // console.log({
@@ -172,11 +203,23 @@ const Admins = (props) => {
         </Modal.Header>
         <Modal.Body>
           <div>
-            {/* <Alert color={alertType} isOpen={open}>
+            <Alert
+              color={alertType}
+              isOpen={open}
+              onClick={() => setOpen(false)}
+              toggle={() => setOpen(false)}
+            >
               {message}
-            </Alert> */}
+            </Alert>
             <div>
               <div className="container justify-content-center">
+                {/* <Alert
+                  color={alertType}
+                  isOpen={open}
+                  onClick={() => setOpen(false)}
+                >
+                  {message}
+                </Alert> */}
                 <div className="pb-5">
                   <h1 className="font-weight-bold fs">Update Admin</h1>
                   <div
@@ -309,7 +352,7 @@ const Admins = (props) => {
                   <Col>
                     <h3 className="mb-0">
                       <br />
-                      Admins
+                      Blocked Admins
                     </h3>
                   </Col>
                 </Row>
@@ -330,7 +373,7 @@ const Admins = (props) => {
                   {fetchedAdmins === undefined
                     ? null
                     : fetchedAdmins.map((data) =>
-                        data.status !== "blocked" ? (
+                        data.status === "blocked" ? (
                           <tr key={data.id}>
                             <th scope="row">
                               <Media className="align-items-center">
@@ -359,33 +402,35 @@ const Admins = (props) => {
 
                             <td>
                               <Badge color="" className="badge-dot mr-4">
-                                <i className="bg-warning" />
+                                {data.status !== "Inactive" ? (
+                                  <i className="bg-dark" />
+                                ) : (
+                                  <i className="bg-success" />
+                                )}
                                 {data.status}
                               </Badge>
                             </td>
 
-                            <td
-                              onClick={() => {
-                                setAdminId(data.id);
-                                alert(data.id);
-                                handleShow();
-                              }}
-                              className="icon-btn"
-                            >
-                              <FontAwesomeIcon
-                                className="btn-icon-only"
-                                icon={faEdit}
-                              />
-                            </td>
+                            {currentAdmin !== undefined ? (
+                              currentAdmin.account.account.super === true ||
+                              currentAdmin.permissionss.includes(
+                                "Edit Admin"
+                              ) ? (
+                                <td
+                                  onClick={() => {
+                                    setAdminId(data.id);
 
-                            <td
-                              className="icon-btn"
-                              onClick={() => {
-                                alert(data.id);
-                              }}
-                            >
-                              <FontAwesomeIcon icon={faTrash} />
-                            </td>
+                                    handleShow();
+                                  }}
+                                  className="icon-btn"
+                                >
+                                  <i class="fas fa-unlock-alt"></i>
+                                </td>
+                              ) : (
+                                <td></td>
+                              )
+                            ) : null}
+                            <td></td>
                           </tr>
                         ) : null
                       )}

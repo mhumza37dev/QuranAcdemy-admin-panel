@@ -74,7 +74,7 @@ const AddAdmins = (props) => {
 
   const register = () => {
     setLoading(true);
-    fetch(`https://quran-server.herokuapp.com/admin/register`, {
+    fetch(`https://quran-server.herokuapp.com/admin/students/register`, {
       method: "POST",
       dataType: "JSON",
       headers: {
@@ -87,19 +87,18 @@ const AddAdmins = (props) => {
         mobile: mobile,
         dob: dob,
         gender: gender,
-        roles: role,
         email: email,
         password: password,
         confirmPassword: confirmPassword,
-        acceptTerms: acceptTerms,
+        acceptTerms: true,
       }),
     })
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
         setMessage(res.message);
-        if (res.message === "Registration successful.") {
-          localStorage.setItem("lastCallAt", Date.now());
+        if (res.message === "Registration successful") {
+          //   localStorage.setItem("lastCallAt", Date.now());
           setLoading(false);
           setAlertType("success");
           setOpen(true);
@@ -132,7 +131,7 @@ const AddAdmins = (props) => {
                   <Col>
                     <h3 className="mb-0">
                       <br />
-                      Admins
+                      Students
                     </h3>
                   </Col>
                   <Col>
@@ -154,7 +153,7 @@ const AddAdmins = (props) => {
                   <div>
                     <div className="container justify-content-center">
                       <div className="pb-5">
-                        <h1 className="font-weight-bold fs">Add New Admin</h1>
+                        <h1 className="font-weight-bold fs">Add New Student</h1>
                         <div
                           style={{
                             borderBottom: "5px solid #5e72e4",
@@ -212,7 +211,7 @@ const AddAdmins = (props) => {
                               }}
                             />
                           </div>
-                          <div className="col-12 col-lg-12 col-md-12 form-group">
+                          <div className="col-6 col-lg-6 col-md-6 form-group">
                             <label htmlFor="birthday">Email</label>
                             <input
                               placeholder="Enter Email"
@@ -224,19 +223,7 @@ const AddAdmins = (props) => {
                             />
                           </div>
 
-                          <div className="col-12 col-lg-6 col-md-6 form-group">
-                            <label htmlFor="name">Password</label>
-                            <input
-                              placeholder="Enter Password"
-                              type="password"
-                              className="form-control"
-                              onChange={(e) => {
-                                setpassword(e.target.value);
-                              }}
-                            />
-                          </div>
-
-                          <div className="dropdown col-xl-3 col-lg-3 col-md-3">
+                          <div className="dropdown col-xl-6 col-lg-6 col-md-6">
                             <label htmlFor="name">Gender</label>
                             <select
                               style={{ width: "100%" }}
@@ -251,7 +238,30 @@ const AddAdmins = (props) => {
                             </select>
                           </div>
 
-                          <div className="dropdown col-xl-3 col-lg-3 col-md-3">
+                          <div className="col-12 col-lg-6 col-md-6 form-group">
+                            <label htmlFor="name">Password</label>
+                            <input
+                              placeholder="Enter Password"
+                              type="password"
+                              className="form-control"
+                              onChange={(e) => {
+                                setpassword(e.target.value);
+                              }}
+                            />
+                          </div>
+                          <div className="col-12 col-lg-6 col-md-6 form-group">
+                            <label htmlFor="name">Password</label>
+                            <input
+                              placeholder="Confirm Password"
+                              type="password"
+                              className="form-control"
+                              onChange={(e) => {
+                                setconfirmPassword(e.target.value);
+                              }}
+                            />
+                          </div>
+
+                          {/* <div className="dropdown col-xl-3 col-lg-3 col-md-3">
                             <label htmlFor="name">Role</label>
                             <select
                               style={{ width: "100%" }}
@@ -268,7 +278,7 @@ const AddAdmins = (props) => {
                                   <option value={roles.id}>{roles.Name}</option>
                                 ))}
                             </select>
-                          </div>
+                          </div> */}
                         </div>
 
                         <label></label>
@@ -290,7 +300,7 @@ const AddAdmins = (props) => {
                             />
                           )}
                           {loading && <span>Please Wait</span>}
-                          {!loading && <strong>Add Admin</strong>}
+                          {!loading && <strong>Add Student</strong>}
                         </BT>
                       </form>
                     </div>

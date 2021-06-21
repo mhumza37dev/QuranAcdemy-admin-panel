@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 import { useLoading, Audio } from "@agney/react-loading";
 
@@ -15,6 +15,10 @@ import {
   CardHeader,
   CardFooter,
   Media,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  Progress,
   Table,
   Container,
   Row,
@@ -57,26 +61,37 @@ const Admins = (props) => {
   });
 
   let admin = JSON.parse(localStorage.getItem("user"));
-  if (!admin.permissionss.includes("view adfmins")) {
+  if (
+    !admin.permissionss.includes("View Admins") &&
+    admin.account.super === false
+  ) {
     props.history.push("/admin/404");
   }
 
+  useMemo(() => setCurrentAdmin(JSON.parse(localStorage.getItem("user"))), []);
+
   useEffect(() => {
-    console.log("sss");
-    fetch(`https://quran-server.herokuapp.com/admin/`)
+    fetch(`https://quran-server.herokuapp.com/admin/students`, {
+      dataType: "JSON",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        Authorization: `Bearer ${currentAdmin.account.jwtToken}`,
+      },
+    })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         setFetchedAdmins(res);
-        setCurrentAdmin(JSON.parse(localStorage.getItem("user")));
       });
-  }, []);
+  }, [fetchedAdmins]);
 
   const edit = () => {
     console.log(currentAdmin.account.jwtToken);
     // setAdminId(a);
-    let url = `https://quran-server.herokuapp.com/admin/${adminId}`;
-    if (adminId !== "" || adminID !== undefined) {
-      console.log("url===>", url);
+    let url = `https://quran-server.herokuapp.com/admin/students/${adminId}`;
+    if (adminId !== "") {
+      console.log(url);
+
       fetch(url, {
         method: "PUt",
         dataType: "JSON",
@@ -93,50 +108,75 @@ const Admins = (props) => {
           email: email,
           password: password,
           confirmPassword: confirmPassword,
-          acceptTerms: acceptTerms,
         }),
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log("response===>", res);
+          console.log(res);
           setMessage(res.message);
           if (res.message === "Successfully Updated") {
+            localStorage.setItem("lastCallAt", Date.now());
             setAlertType("success");
             setOpen(true);
             setTimeout(() => {
-              setOpen(false);
-            }, 5000);
+              handleShow();
+            }, 1000);
           } else if (res.message === "Email is already in use") {
             setAlertType("warning");
             setOpen(true);
-            setTimeout(() => {
-              setOpen(false);
-            }, 5000);
+            // setTimeout(() => {
+            //   setOpen(false);
+            // }, 5000);
           } else if (res.message === "Phone Number is already in use") {
             setAlertType("warning");
             setOpen(true);
-            setTimeout(() => {
-              setOpen(false);
-            }, 5000);
+            // setTimeout(() => {
+            //   setOpen(false);
+            // }, 5000);
           } else {
             setAlertType("danger");
             setOpen(true);
-            setTimeout(() => {
-              setOpen(false);
-            }, 5000);
+            // setTimeout(() => {
+            //   setOpen(false);
+            // }, 5000);
           }
         });
     } else {
       setMessage("Wait a minute !!!! who are you ?????");
       setAlertType("danger");
       setOpen(true);
-      setTimeout(() => {
-        setOpen(false);
-      }, 5000);
+      // setTimeout(() => {
+      //   setOpen(false);
+      // }, 5000);
     }
   };
 
-  const editAdmin = () => {};
+  const deleteAdmin = () => {
+    console.log("delete function start");
+    fetch(
+      `https://quran-server.herokuapp.com/admin/admin/teacher/block/${adminId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("response===> ", res);
+        setMessage(res.message);
+        if (res.message === "Account deleted successfully") {
+          localStorage.setItem("lastCallAt", Date.now());
+          setAlertType("success");
+          setOpen(true);
+          setAdminId("");
+        } else {
+          setAlertType("danger");
+          setOpen(true);
+        }
+      });
+  };
 
   const displayStates = () => {
     // console.log({
@@ -156,6 +196,18 @@ const Admins = (props) => {
   const handleShow = () => setShow(true);
   const classes = useStyles();
 
+  function getFormattedDate(date) {
+    var date = new Date(date);
+    var year = date.getFullYear();
+
+    var month = (1 + date.getMonth()).toString();
+    month = month.length > 1 ? month : "0" + month;
+
+    var day = date.getDate().toString();
+    day = day.length > 1 ? day : "0" + day;
+
+    return year + "-" + month + "-" + day;
+  }
   return (
     <>
       <div className="header bg-gradient-dark pb-8 pt-5 pt-md-8"></div>
@@ -172,13 +224,25 @@ const Admins = (props) => {
         </Modal.Header>
         <Modal.Body>
           <div>
-            {/* <Alert color={alertType} isOpen={open}>
+            <Alert
+              color={alertType}
+              isOpen={open}
+              onClick={() => setOpen(false)}
+              toggle={() => setOpen(false)}
+            >
               {message}
-            </Alert> */}
+            </Alert>
             <div>
               <div className="container justify-content-center">
+                {/* <Alert
+                  color={alertType}
+                  isOpen={open}
+                  onClick={() => setOpen(false)}
+                >
+                  {message}
+                </Alert> */}
                 <div className="pb-5">
-                  <h1 className="font-weight-bold fs">Update Admin</h1>
+                  <h1 className="font-weight-bold fs">Update Student</h1>
                   <div
                     style={{
                       borderBottom: "5px solid #5e72e4",
@@ -230,6 +294,7 @@ const Admins = (props) => {
                       <input
                         placeholder="enter birthday"
                         type="Date"
+                        value={getFormattedDate(dob)}
                         className="form-control"
                         onChange={(e) => {
                           setdob(e.target.value);
@@ -309,7 +374,7 @@ const Admins = (props) => {
                   <Col>
                     <h3 className="mb-0">
                       <br />
-                      Admins
+                      Students
                     </h3>
                   </Col>
                 </Row>
@@ -320,8 +385,6 @@ const Admins = (props) => {
                     <th scope="col">Firstname</th>
                     <th scope="col">Lastname</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Mobile</th>
-                    <th scope="col">Status</th>
                     <th scope="col" />
                     <th scope="col" />
                   </tr>
@@ -353,39 +416,59 @@ const Admins = (props) => {
                             </td>
                             <td>
                               <Badge color="" className="badge-dot mr-4">
-                                {data.mobile}
+                                {data.gender}
                               </Badge>
                             </td>
 
-                            <td>
-                              <Badge color="" className="badge-dot mr-4">
-                                <i className="bg-warning" />
-                                {data.status}
-                              </Badge>
-                            </td>
+                            {currentAdmin !== undefined ? (
+                              currentAdmin.account.account.super === true ||
+                              currentAdmin.permissionss.includes(
+                                "Edit Admin"
+                              ) ? (
+                                <td
+                                  onClick={() => {
+                                    setAdminId(data.id);
+                                    setfirstname(data.firstName);
+                                    setfirstname(data.firstName);
+                                    setlastname(data.lastName);
+                                    console.log(getFormattedDate(data.dob));
+                                    setEmail(data.email);
+                                    setdob(data.dob);
+                                    setmobile(data.mobile);
+                                    setgender(data.gender);
+                                    handleShow();
+                                  }}
+                                  className="icon-btn"
+                                >
+                                  <FontAwesomeIcon
+                                    className="btn-icon-only"
+                                    icon={faEdit}
+                                  />
+                                </td>
+                              ) : (
+                                <td></td>
+                              )
+                            ) : null}
 
-                            <td
-                              onClick={() => {
-                                setAdminId(data.id);
-                                alert(data.id);
-                                handleShow();
-                              }}
-                              className="icon-btn"
-                            >
-                              <FontAwesomeIcon
-                                className="btn-icon-only"
-                                icon={faEdit}
-                              />
-                            </td>
-
-                            <td
-                              className="icon-btn"
-                              onClick={() => {
-                                alert(data.id);
-                              }}
-                            >
-                              <FontAwesomeIcon icon={faTrash} />
-                            </td>
+                            {currentAdmin !== undefined ? (
+                              currentAdmin.account.account.super === true ||
+                              currentAdmin.permissionss.includes(
+                                "Delete Admin"
+                              ) ? (
+                                <td
+                                  className="icon-btn"
+                                  onClick={() => {
+                                    setAdminId(data.id);
+                                    alert(data.id);
+                                    deleteAdmin();
+                                  }}
+                                >
+                                  <FontAwesomeIcon icon={faTrash} />
+                                </td>
+                              ) : (
+                                <td></td>
+                              )
+                            ) : null}
                           </tr>
                         ) : null
                       )}

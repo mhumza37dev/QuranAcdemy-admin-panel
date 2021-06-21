@@ -36,27 +36,25 @@ import {
 import { Modal } from "react-bootstrap";
 import { useScrollTrigger } from "@material-ui/core";
 
-function Permissions(props) {
+function Roles(props) {
   const [permissions, setPermissions] = useState();
   const [currentAdmin, setCurrentAdmin] = useState();
   const [show, setShow] = useState(false);
   const [adminId, setAdminId] = useState("");
-  const [adminModule, setAdminModule] = useState();
+
   let admin = JSON.parse(localStorage.getItem("user"));
   if (admin.account.super === false) {
     if (!admin.permissionss.includes("Vew Permissions")) {
       props.history.push("/admin/404");
     }
   }
-  useMemo(() => {
-    setCurrentAdmin(JSON.parse(localStorage.getItem("user")));
-    console.log(currentAdmin);
-  }, []);
+
+  useMemo(() => setCurrentAdmin(JSON.parse(localStorage.getItem("user"))), []);
 
   useEffect(() => {
     console.log(`Bearer ${currentAdmin.account.jwtToken}`);
     console.log("sss");
-    fetch(`https://quran-server.herokuapp.com/admin/permission/`, {
+    fetch(`https://quran-server.herokuapp.com/admin/roles/`, {
       method: "GET",
       dataType: "JSON",
       headers: {
@@ -66,19 +64,10 @@ function Permissions(props) {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("dddd", res);
-        let arr = res.data.map((item) => {
-          return item.Name;
-        });
-        let adminPermissions = [];
-        arr.forEach((element) => {
-          if (element.includes("Admins")) {
-            adminPermissions.push(element);
-          }
-        });
-        setAdminModule(adminPermissions);
+        console.log(res);
         setPermissions(res);
-      });
+      })
+      .catch((e) => console.log(e));
   }, [permissions]);
 
   const handleClose = () => setShow(false);
@@ -86,7 +75,7 @@ function Permissions(props) {
 
   const deleteAdmin = (adminid) => {
     console.log("delete function start");
-    fetch(`https://quran-server.herokuapp.com/admin/permission/${adminid}`, {
+    fetch(`https://quran-server.herokuapp.com/admin/roles/${adminid}`, {
       method: "DELETE",
       dataType: "JSON",
       headers: {
@@ -114,7 +103,7 @@ function Permissions(props) {
                   <Col>
                     <h3 className="mb-0">
                       <br />
-                      Permissions
+                      Roles
                     </h3>
                   </Col>
                 </Row>
@@ -135,7 +124,7 @@ function Permissions(props) {
                 <tbody>
                   {permissions === undefined
                     ? null
-                    : permissions.data.map((data) =>
+                    : permissions.map((data) =>
                         data.status !== "blocked" ? (
                           <tr key={data.id}>
                             <th scope="row">
@@ -170,9 +159,9 @@ function Permissions(props) {
                             ) : null}
 
                             {currentAdmin !== undefined ? (
-                              currentAdmin.account.super === true ||
+                              currentAdmin.account.account.super === true ||
                               !currentAdmin.permissionss.includes(
-                                "delete admins"
+                                "delete admin"
                               ) ? (
                                 <td
                                   className="icon-btn"
@@ -200,4 +189,4 @@ function Permissions(props) {
   );
 }
 
-export default Permissions;
+export default Roles;

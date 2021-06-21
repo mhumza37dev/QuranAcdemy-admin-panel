@@ -139,3 +139,22 @@
     transform: rotate(-6deg);
   }
 }
+
+tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+i :hover {
+  cursor: pointer;
+  background-color: #555;
+}
+
+tr:nth-of-type(odd):hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+tr:nth-of-type(even):hover {
+  /* background-color: transparent; */
+  background-color: #b8b5b579;
+  cursor: pointer;
+}

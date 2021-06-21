@@ -60,10 +60,6 @@ const Admin = (props) => {
     return "Brand";
   };
 
-  // console.log("aaa", localStorage.getItem("lastCallAt"));
-  // console.log(moment().format());
-  // console.log(moment("20111031", "YYYYMMDD").startOf("hour").fromNow());
-
   const startDate = moment(parseInt(localStorage.getItem("lastCallAt")));
   const timeEnd = moment(Date.now());
   const diff = timeEnd.diff(startDate);
@@ -76,7 +72,7 @@ const Admin = (props) => {
   console.log("Minutes since last call:", diffDuration.minutes());
   timeEnd.diff(startDate);
 
-  if (diffDuration.minutes() >= 10) {
+  if (diffDuration.minutes() >= 1440) {
     localStorage.clear();
     // props.history.push("/auth/signin");
   }
@@ -93,7 +89,7 @@ const Admin = (props) => {
           routes={routes}
           logo={{
             innerLink: "/admin",
-            imgSrc: require("../assets/img/brand/argon-react.png").default,
+            imgSrc: require("../assets/img/brand/quranAcademy.png"),
             imgAlt: "...",
           }}
         />

@@ -1,20 +1,3 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { useState, useEffect, useStateCallback } from "react";
 
 // reactstrap components
@@ -42,6 +25,9 @@ const Login = (props) => {
 
   const [open, setOpen] = React.useState(false);
 
+  const platform = window.navigator.platform;
+  console.log(platform);
+
   if (JSON.parse(localStorage.getItem("user"))) {
     console.log("aaa");
     props.history.push("/admin/index", localStorage.getItem("user"));
@@ -51,10 +37,10 @@ const Login = (props) => {
   useEffect(() => {
     const listener = (event) => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
+        abc();
         console.log("Enter key was pressed. Run your function.");
         event.preventDefault();
         // callMyFunction();
-        abc();
       }
     };
     document.addEventListener("keydown", listener);
@@ -75,24 +61,20 @@ const Login = (props) => {
     if (email === "") {
       setOpen(true);
       setErrorMessage("Email is required");
-      setTimeout(() => {
-        setOpen(false);
-      }, 3000);
     } else if (pass === "") {
       setOpen(true);
       setErrorMessage("Password is required");
-      setTimeout(() => {
-        setOpen(false);
-      }, 3000);
     } else {
+      let url = `https://quran-server.herokuapp.com/admin/authenticate`;
+      console.log(url);
       const response = await fetch(
-        "https://quran-server.herokuapp.com/admin/authenticate",
+        `https://quran-server.herokuapp.com/admin/authenticate`,
         {
           method: "POST",
           dataType: "JSON",
           headers: {
-            "Content-Type": "application/json; charset=utf-8",
-            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+            Accept: "application/json",
           },
           body: JSON.stringify({ email: email, password: pass }),
         }
@@ -111,9 +93,9 @@ const Login = (props) => {
         console.log(userr);
         setOpen(true);
         setErrorMessage(userr.message);
-        setTimeout(() => {
-          setOpen(false);
-        }, 3000);
+      } else {
+        setOpen(true);
+        setErrorMessage("Network Error");
       }
     }
   }
@@ -121,8 +103,8 @@ const Login = (props) => {
   return (
     <>
       <Col
-        lg="5"
-        md="7"
+        lg="4"
+        md="4"
         style={{
           position: "absolute",
           top: "15%",
@@ -132,11 +114,16 @@ const Login = (props) => {
           margin: "auto",
         }}
       >
-        <Alert color="danger" isOpen={open}>
+        <Alert
+          color="danger"
+          isOpen={open}
+          onClick={() => setOpen(false)}
+          toggle={() => setOpen(false)}
+        >
           {errorMessage}
         </Alert>
         <Card className="bg-secondary shadow border-0">
-          <CardBody className="px-lg-5 py-lg-5">
+          <CardBody className="px-lg-5 py-lg-5" style={{ background: "" }}>
             <div className="text-center text-muted mb-4">
               <small>
                 <h1 className="uiHeaderTitle" aria-hidden="true">

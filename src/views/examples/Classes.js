@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 // reactstrap components
 import {
@@ -6,39 +6,55 @@ import {
   Card,
   CardHeader,
   CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
   Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   Progress,
   Table,
   Container,
   Row,
-  UncontrolledTooltip,
   Col,
   Button as BT,
 } from "reactstrap";
 // core components
 
-const Classes = () => {
+const Classes = (props) => {
   const [fetchedClasses, setFetchedClasses] = useState();
+
   const [currentAdmin, setCurrentAdmin] = useState();
-  const [show, setShow] = useState(false);
-  const [adminId, setAdminId] = useState("");
+
+  useMemo(() => setCurrentAdmin(JSON.parse(localStorage.getItem("user"))), []);
 
   useEffect(() => {
     console.log("sss");
-    fetch("https://quran-server.herokuapp.com/class/")
+    fetch(`https://quran-server.herokuapp.com/admin/class/`, {
+      method: "GET",
+      dataType: "JSON",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        Authorization: `Bearer ${currentAdmin.account.jwtToken}`,
+      },
+    })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         setFetchedClasses(res);
-        setCurrentAdmin(JSON.parse(localStorage.getItem("user")));
       });
   }, []);
+
+  const deleteAdmin = (adminid) => {
+    console.log("delete function start");
+    fetch(`https://quran-server.herokuapp.com/admin/class/${adminid}`, {
+      method: "DELETE",
+      dataType: "JSON",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        Authorization: `Bearer ${currentAdmin.account.jwtToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("response===> ", res);
+      });
+  };
 
   return (
     <>
@@ -69,23 +85,29 @@ const Classes = () => {
                     <th scope="col">Duration</th>
                     <th scope="col">Student Limit</th>
                     <th scope="col">Enroled Students</th>
-                    <th scope="col" />
+                    {/* <th scope="col" /> */}
                   </tr>
                 </thead>
                 <tbody>
                   {fetchedClasses !== undefined &&
                     fetchedClasses.map((data) => (
-                      <tr>
+                      <tr
+                        onClick={() =>
+                          props.history.push("/admin/class/info", data)
+                        }
+                      >
                         <th scope="row">
                           <Media className="align-items-center">
                             {/* <h1>hamza<h1
                              */}
                             <Media>
-                              <span className="mb-0 text-sm">{data.title}</span>
+                              <span className="mb-0 text-sm">
+                                {data.course.Title}
+                              </span>
                             </Media>
                           </Media>
                         </th>
-                        <td>{data.teacher}</td>
+                        <td>{data.teacher[0].firstName}</td>
                         <td>
                           <Badge color="" className="badge-dot mr-4">
                             {data.time_slot}
@@ -127,12 +149,32 @@ const Classes = () => {
                             <span className="mr-2">{data.students.length}</span>
                             <div>
                               <Progress
+                                color="info" //#5e72e4
                                 max={data.max_students}
                                 value={data.students.length}
                               />
                             </div>
                           </div>
                         </td>
+
+                        {/* <td>
+                          <div className="d-flex align-items-center">
+                            <BT
+                              onClick={() => props.history.push("Class/info")}
+                            >
+                              Info
+                            </BT>
+                          </div>
+                        </td> */}
+
+                        {/* <td>
+                          <div
+                            className="d-flex align-items-center"
+                            onClick={() => alert("clicked....")}
+                          >
+                            <i class="fas fa-info-circle"></i>
+                          </div>
+                        </td> */}
                       </tr>
                     ))}
                 </tbody>

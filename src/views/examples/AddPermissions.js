@@ -32,6 +32,7 @@ import {
   Alert,
   Button as BT,
 } from "reactstrap";
+require("dotenv").config();
 
 function Permissions(props) {
   const [fetchedAdmins, setFetchedAdmins] = useState();
@@ -40,49 +41,48 @@ function Permissions(props) {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [currentAdmin, setCurrentAdmin] = useState();
+
+  useEffect(() => {
+    setCurrentAdmin(JSON.parse(localStorage.getItem("user")));
+  }, []);
 
   const add = () => {
     setLoading(true);
     // alert("sss");
     if (permissiosnName === "") {
       setAlertType("warning");
-      // setLoading(false);
       setMessage("Permmission Name can not be empty");
       setOpen(true);
+    } else {
+      fetch(`https://quran-server.herokuapp.com/admin/permission/add`, {
+        method: "POST",
+        dataType: "JSON",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${currentAdmin.account.jwtToken}`,
+        },
+        body: JSON.stringify({
+          Name: permissiosnName,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.message === "Permission Added") {
+            setPermissiosnName("");
+            setAlertType("success");
+            setLoading(false);
+            setMessage("Permission Succesfully Added");
+            setOpen(true);
+          } else {
+            setPermissiosnName("");
+            setAlertType("danger");
+            setLoading(false);
+            setMessage("Permmission Name can not be empty");
+            setOpen(true);
+          }
+        });
     }
-
-    fetch("https://quran-server.herokuapp.com/permission/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify({
-        Name: permissiosnName,
-      }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.message === "Permission Added") {
-          setPermissiosnName("");
-          setAlertType("success");
-          setLoading(false);
-          setMessage("Permission Succesfully Added");
-          setOpen(true);
-        } else {
-          setPermissiosnName("");
-          setAlertType("danger");
-          setLoading(false);
-          setMessage("Permmission Name can not be empty");
-          setOpen(true);
-        }
-      });
-
-    // setTimeout(function () {
-    //   setAlertType("warning");
-    //   setLoading(false);
-    //   setMessage("Permmission Name can not be empty");
-    //   setOpen(true);
-    // }, 1000);
   };
 
   return (
@@ -114,6 +114,7 @@ function Permissions(props) {
                     isOpen={open}
                     closeAriaLabel=""
                     onClick={() => setOpen(false)}
+                    toggle={() => setOpen(false)}
                   >
                     {message}
                   </Alert>

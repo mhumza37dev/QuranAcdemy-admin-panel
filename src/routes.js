@@ -20,16 +20,30 @@ import Profile from "views/examples/Classes.js";
 import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
 import Admins from "views/examples/Admins.js";
-import Teacher from "views/examples/Teacher.js";
-import Icons from "views/examples/Icons.js";
 import AddAdmins from "views/examples/AddAdmins";
-import Classes from "views/examples/Classes";
-import Page404 from "views/examples/Page404";
-import AddPermissions from "views/examples/AddPermissions";
-import Permissions from "views/examples/Permissions";
-import AddClasses from "views/examples/AddClasses";
+import BlackList from "views/examples/BlackList";
 
-import AssignPermissions from "views/examples/AssignPermissions";
+import Icons from "views/examples/Icons.js";
+import Classes from "views/examples/Classes";
+import AddClasses from "views/examples/AddClasses";
+import Page404 from "views/examples/Page404";
+
+import Permissions from "views/examples/Permissions";
+import AddPermissions from "views/examples/AddPermissions";
+
+import AddRoles from "views/examples/AddRoles";
+import Roles from "views/examples/Roles";
+
+import Teacher from "views/examples/Teacher.js";
+import AddTeacher from "views/examples/AddTeachers";
+
+import Students from "views/examples/Students";
+import AddStudents from "views/examples/AddStudents";
+
+import Courses from "views/examples/Courses";
+import AddCourses from "views/examples/AddCourses";
+import ClassDetail from "views/examples/ClassDetail";
+
 var routes = [
   {
     path: "/index",
@@ -52,60 +66,110 @@ var routes = [
     component: Maps,
     layout: "/admin",
   },
+
   {
-    path: "/View Classes",
+    path: "/admins/all",
+    name: "Admins",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: Admins,
+    layout: "/admin",
+  },
+
+  {
+    path: "/admins/add",
+    name: "Add Admins",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: AddAdmins,
+    layout: "/admin",
+  },
+  {
+    path: "/admins/blacklist",
+    name: "Black List",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: BlackList,
+    layout: "/admin",
+  },
+
+  {
+    path: "/class/info",
+    name: "Classes Detail",
+    icon: "ni ni-single-02 text-yellow",
+    component: ClassDetail,
+    layout: "/admin",
+  },
+
+  {
+    path: "/class/all",
     name: "View Classes",
     icon: "ni ni-single-02 text-yellow",
     component: Classes,
     layout: "/admin",
   },
   {
-    path: "/Add Classes",
+    path: "/class/add",
     name: "Add Classes",
     icon: "ni ni-single-02 text-yellow",
     component: AddClasses,
     layout: "/admin",
   },
   {
-    path: "/teachers",
-    name: "Teachers",
+    path: "/teachers/all",
+    name: "ViewTeachers",
     icon: "ni ni-bullet-list-67 text-red",
     component: Teacher,
     layout: "/admin",
   },
+
   {
-    path: "/View Admins",
-    name: "Admins",
+    path: "/teachers/add",
+    name: "Add Teachers",
     icon: "ni ni-bullet-list-67 text-red",
-    component: Admins,
+    component: AddTeacher,
     layout: "/admin",
   },
+
   {
-    path: "/Vew Permissions",
+    path: "/students/all",
+    name: "View Students",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: Students,
+    layout: "/admin",
+  },
+
+  {
+    path: "/students/add",
+    name: "Add Students",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: AddStudents,
+    layout: "/admin",
+  },
+
+  {
+    path: "/permissions/all",
     name: "Permissions",
     icon: "ni ni-bullet-list-67 text-red",
     component: Permissions,
     layout: "/admin",
   },
   {
-    path: "/Add Permissions",
+    path: "/permissions/add",
     name: "Add Permissions",
     icon: "ni ni-bullet-list-67 text-red",
     component: AddPermissions,
     layout: "/admin",
   },
   {
-    path: "/Assign Permissions",
-    name: "Assign Permissions",
+    path: "/roles/add",
+    name: "Add Roles",
     icon: "ni ni-bullet-list-67 text-red",
-    component: AssignPermissions,
+    component: AddRoles,
     layout: "/admin",
   },
   {
-    path: "/Add Admins",
-    name: "Add Admins",
+    path: "/roles/all",
+    name: "View Roles",
     icon: "ni ni-bullet-list-67 text-red",
-    component: AddAdmins,
+    component: Roles,
     layout: "/admin",
   },
 
@@ -114,6 +178,22 @@ var routes = [
     // name: "Not Found",
     icon: "ni ni-bullet-list-67 text-red",
     component: Page404,
+    layout: "/admin",
+  },
+
+  {
+    path: "/course/all",
+    name: "ViewCourses",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: Courses,
+    layout: "/admin",
+  },
+
+  {
+    path: "/course/add",
+    name: "Add Courses",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: AddCourses,
     layout: "/admin",
   },
 ];

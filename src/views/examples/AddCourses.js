@@ -26,16 +26,13 @@ const AddAdmins = (props) => {
   const [currentAdmin, setCurrentAdmin] = useState();
   const [runn, setrunn] = useState();
   const [show, setShow] = useState(false);
-  const [firstname, setfirstname] = useState("");
+  const [title, setTile] = useState("");
   const [lastname, setlastname] = useState("");
   const [mobile, setmobile] = useState("");
   const [dob, setdob] = useState("");
   const [gender, setgender] = useState("");
   const [role, setRole] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setpassword] = useState("");
-  const [confirmPassword, setconfirmPassword] = useState("");
-  const [acceptTerms, setacceptTerms] = useState();
+
   const [message, setMessage] = useState("");
   const [alertType, setAlertType] = useState("");
   const [open, setOpen] = React.useState(false);
@@ -74,7 +71,7 @@ const AddAdmins = (props) => {
 
   const register = () => {
     setLoading(true);
-    fetch(`https://quran-server.herokuapp.com/admin/register`, {
+    fetch(`https://quran-server.herokuapp.com/admin/course/add`, {
       method: "POST",
       dataType: "JSON",
       headers: {
@@ -82,24 +79,14 @@ const AddAdmins = (props) => {
         Authorization: `Bearer ${currentAdmin.account.jwtToken}`,
       },
       body: JSON.stringify({
-        firstName: firstname,
-        lastName: lastname,
-        mobile: mobile,
-        dob: dob,
-        gender: gender,
-        roles: role,
-        email: email,
-        password: password,
-        confirmPassword: confirmPassword,
-        acceptTerms: acceptTerms,
+        Title: title,
       }),
     })
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
         setMessage(res.message);
-        if (res.message === "Registration successful.") {
-          localStorage.setItem("lastCallAt", Date.now());
+        if (res.message === "Course Added") {
           setLoading(false);
           setAlertType("success");
           setOpen(true);
@@ -132,7 +119,7 @@ const AddAdmins = (props) => {
                   <Col>
                     <h3 className="mb-0">
                       <br />
-                      Admins
+                      Course
                     </h3>
                   </Col>
                   <Col>
@@ -154,7 +141,7 @@ const AddAdmins = (props) => {
                   <div>
                     <div className="container justify-content-center">
                       <div className="pb-5">
-                        <h1 className="font-weight-bold fs">Add New Admin</h1>
+                        <h1 className="font-weight-bold fs">Add New Course</h1>
                         <div
                           style={{
                             borderBottom: "5px solid #5e72e4",
@@ -168,116 +155,24 @@ const AddAdmins = (props) => {
                       >
                         <div className="row pb-lg-3 pb-md-3">
                           <div className="col-12  col-lg-6 col-md-6 form-group">
-                            <label htmlFor="Name">First Name</label>
+                            <label htmlFor="Name">Title</label>
                             <input
-                              placeholder="enter first name"
+                              placeholder="enter course title"
                               type="name"
                               className="form-control"
                               onChange={(e) => {
-                                setfirstname(e.target.value);
+                                setTile(e.target.value);
                               }}
                             />
-                          </div>
-                          <div className="col-12 col-lg-6 col-md-6 form-group">
-                            <label htmlFor="name">Last Name</label>
-                            <input
-                              placeholder="enter last name"
-                              type="name"
-                              className="form-control"
-                              onChange={(e) => {
-                                setlastname(e.target.value);
-                              }}
-                            />
-                          </div>
-                          <div className="col-12  col-lg-6 col-md-6 form-group">
-                            <label htmlFor="address">Mobile</label>
-                            <input
-                              placeholder="enter mobile number"
-                              type="text"
-                              className="form-control"
-                              onChange={(e) => {
-                                setmobile(e.target.value);
-                              }}
-                            />
-                          </div>
-
-                          <div className="col-12 col-lg-6 col-md-6 form-group">
-                            <label htmlFor="birthday">Birthday</label>
-                            <input
-                              placeholder="enter birthday"
-                              type="Date"
-                              className="form-control"
-                              onChange={(e) => {
-                                setdob(e.target.value);
-                              }}
-                            />
-                          </div>
-                          <div className="col-12 col-lg-12 col-md-12 form-group">
-                            <label htmlFor="birthday">Email</label>
-                            <input
-                              placeholder="Enter Email"
-                              type="email"
-                              className="form-control"
-                              onChange={(e) => {
-                                setEmail(e.target.value);
-                              }}
-                            />
-                          </div>
-
-                          <div className="col-12 col-lg-6 col-md-6 form-group">
-                            <label htmlFor="name">Password</label>
-                            <input
-                              placeholder="Enter Password"
-                              type="password"
-                              className="form-control"
-                              onChange={(e) => {
-                                setpassword(e.target.value);
-                              }}
-                            />
-                          </div>
-
-                          <div className="dropdown col-xl-3 col-lg-3 col-md-3">
-                            <label htmlFor="name">Gender</label>
-                            <select
-                              style={{ width: "100%" }}
-                              className="form-control"
-                              id="sel1"
-                              onChange={(e) => {
-                                setgender(e.target.value);
-                              }}
-                            >
-                              <option>Male</option>
-                              <option>Female</option>
-                            </select>
-                          </div>
-
-                          <div className="dropdown col-xl-3 col-lg-3 col-md-3">
-                            <label htmlFor="name">Role</label>
-                            <select
-                              style={{ width: "100%" }}
-                              className="form-control"
-                              id="sel2"
-                              // value={role}
-                              onChange={(e) => {
-                                setRole(e.target.value);
-                              }}
-                            >
-                              <option></option>
-                              {fetchRoles !== undefined &&
-                                fetchRoles.map((roles) => (
-                                  <option value={roles.id}>{roles.Name}</option>
-                                ))}
-                            </select>
                           </div>
                         </div>
 
-                        <label></label>
                         <BT
                           size="lg"
                           style={{
                             background: "#5e72e4",
                             color: "white",
-                            marginTop: "20px",
+                            marginTop: "0px",
                           }}
                           onClick={() => {
                             register();
@@ -290,7 +185,7 @@ const AddAdmins = (props) => {
                             />
                           )}
                           {loading && <span>Please Wait</span>}
-                          {!loading && <strong>Add Admin</strong>}
+                          {!loading && <strong>Add Course</strong>}
                         </BT>
                       </form>
                     </div>

@@ -100,7 +100,7 @@ const Login = (props) => {
       }, 3000);
     } else {
       const response = await fetch(
-        (body = "https://quran-server.herokuapp.com/admin/reset-password"),
+        (body = `https://quran-server.herokuapp.com/admin/reset-password`),
         {
           method: "POST", // *GET, POST, PUT, DELETE, etc.
           dataType: "JSON",
@@ -147,7 +147,7 @@ const Login = (props) => {
           <CardBody className="px-lg-5 py-lg-5">
             <div className="text-center text-muted mb-4">
               <small style={{ textAlign: "start" }}>
-                <h2 class="uiHeaderTitle" aria-hidden="true">
+                <h2 className="uiHeaderTitle" aria-hidden="true">
                   Reset your Password
                 </h2>
                 <hr class="solid" />

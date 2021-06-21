@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 import { useLoading, Audio } from "@agney/react-loading";
 
@@ -15,6 +15,10 @@ import {
   CardHeader,
   CardFooter,
   Media,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  Progress,
   Table,
   Container,
   Row,
@@ -24,6 +28,7 @@ import {
 } from "reactstrap";
 
 import { Modal } from "react-bootstrap";
+import { title } from "process";
 // core components
 
 // import { data } from "./Data.js";
@@ -36,7 +41,7 @@ const Admins = (props) => {
   const [fetchedAdmins, setFetchedAdmins] = useState();
   const [runn, setrunn] = useState();
   const [show, setShow] = useState(false);
-  const [firstname, setfirstname] = useState("");
+  const [title, setTitle] = useState("");
   const [lastname, setlastname] = useState("");
   const [mobile, setmobile] = useState("");
   const [dob, setdob] = useState("");
@@ -57,26 +62,37 @@ const Admins = (props) => {
   });
 
   let admin = JSON.parse(localStorage.getItem("user"));
-  if (!admin.permissionss.includes("view adfmins")) {
+  if (
+    !admin.permissionss.includes("View Admins") &&
+    admin.account.super === false
+  ) {
     props.history.push("/admin/404");
   }
 
+  useMemo(() => setCurrentAdmin(JSON.parse(localStorage.getItem("user"))), []);
+
   useEffect(() => {
-    console.log("sss");
-    fetch(`https://quran-server.herokuapp.com/admin/`)
+    fetch(`https://quran-server.herokuapp.com/admin/course`, {
+      dataType: "JSON",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        Authorization: `Bearer ${currentAdmin.account.jwtToken}`,
+      },
+    })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         setFetchedAdmins(res);
-        setCurrentAdmin(JSON.parse(localStorage.getItem("user")));
       });
-  }, []);
+  }, [fetchedAdmins]);
 
   const edit = () => {
     console.log(currentAdmin.account.jwtToken);
     // setAdminId(a);
-    let url = `https://quran-server.herokuapp.com/admin/${adminId}`;
-    if (adminId !== "" || adminID !== undefined) {
-      console.log("url===>", url);
+    let url = `https://quran-server.herokuapp.com/admin/course/${adminId}`;
+    if (adminId !== "") {
+      console.log(url);
+
       fetch(url, {
         method: "PUt",
         dataType: "JSON",
@@ -85,58 +101,66 @@ const Admins = (props) => {
           Authorization: `Bearer ${currentAdmin.account.jwtToken}`,
         },
         body: JSON.stringify({
-          firstName: firstname,
-          lastName: lastname,
-          mobile: mobile,
-          dob: dob,
-          gender: gender,
-          email: email,
-          password: password,
-          confirmPassword: confirmPassword,
-          acceptTerms: acceptTerms,
+          Title: title,
         }),
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log("response===>", res);
+          console.log(res);
           setMessage(res.message);
-          if (res.message === "Successfully Updated") {
+          if (res.Title === title) {
+            localStorage.setItem("lastCallAt", Date.now());
+            setMessage("Updated");
             setAlertType("success");
             setOpen(true);
             setTimeout(() => {
-              setOpen(false);
-            }, 5000);
-          } else if (res.message === "Email is already in use") {
+              handleShow();
+            }, 1000);
+          } else if (res.message === "Course not found") {
             setAlertType("warning");
             setOpen(true);
-            setTimeout(() => {
-              setOpen(false);
-            }, 5000);
+            // setTimeout(() => {
+            //   setOpen(false);
+            // }, 5000);
           } else if (res.message === "Phone Number is already in use") {
             setAlertType("warning");
             setOpen(true);
-            setTimeout(() => {
-              setOpen(false);
-            }, 5000);
+            // setTimeout(() => {
+            //   setOpen(false);
+            // }, 5000);
           } else {
             setAlertType("danger");
             setOpen(true);
-            setTimeout(() => {
-              setOpen(false);
-            }, 5000);
+            // setTimeout(() => {
+            //   setOpen(false);
+            // }, 5000);
           }
         });
     } else {
       setMessage("Wait a minute !!!! who are you ?????");
       setAlertType("danger");
       setOpen(true);
-      setTimeout(() => {
-        setOpen(false);
-      }, 5000);
+      // setTimeout(() => {
+      //   setOpen(false);
+      // }, 5000);
     }
   };
 
-  const editAdmin = () => {};
+  const deleteAdmin = (adminid) => {
+    console.log("delete function start");
+    fetch(`https://quran-server.herokuapp.com/admin/course/${adminid}`, {
+      method: "DELETE",
+      dataType: "JSON",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        Authorization: `Bearer ${currentAdmin.account.jwtToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("response===> ", res);
+      });
+  };
 
   const displayStates = () => {
     // console.log({
@@ -172,13 +196,25 @@ const Admins = (props) => {
         </Modal.Header>
         <Modal.Body>
           <div>
-            {/* <Alert color={alertType} isOpen={open}>
+            <Alert
+              color={alertType}
+              isOpen={open}
+              onClick={() => setOpen(false)}
+              toggle={() => setOpen(false)}
+            >
               {message}
-            </Alert> */}
+            </Alert>
             <div>
               <div className="container justify-content-center">
+                {/* <Alert
+                  color={alertType}
+                  isOpen={open}
+                  onClick={() => setOpen(false)}
+                >
+                  {message}
+                </Alert> */}
                 <div className="pb-5">
-                  <h1 className="font-weight-bold fs">Update Admin</h1>
+                  <h1 className="font-weight-bold fs">Update Student</h1>
                   <div
                     style={{
                       borderBottom: "5px solid #5e72e4",
@@ -193,88 +229,12 @@ const Admins = (props) => {
                       <input
                         placeholder="enter first name"
                         type="name"
-                        value={firstname}
+                        value={title}
                         className="form-control"
                         onChange={(e) => {
-                          setfirstname(e.target.value);
+                          setTitle(e.target.value);
                         }}
                       />
-                    </div>
-                    <div className="col-12 col-lg-6 col-md-6 form-group">
-                      <label htmlFor="name">Last Name</label>
-                      <input
-                        placeholder="enter last name"
-                        type="name"
-                        value={lastname}
-                        className="form-control"
-                        onChange={(e) => {
-                          setlastname(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <div className="col-12  col-lg-6 col-md-6 form-group">
-                      <label htmlFor="address">Mobile</label>
-                      <input
-                        placeholder="enter mobile number"
-                        type="text"
-                        value={mobile}
-                        className="form-control"
-                        onChange={(e) => {
-                          setmobile(e.target.value);
-                        }}
-                      />
-                    </div>
-
-                    <div className="col-12 col-lg-6 col-md-6 form-group">
-                      <label htmlFor="birthday">Birthday</label>
-                      <input
-                        placeholder="enter birthday"
-                        type="Date"
-                        className="form-control"
-                        onChange={(e) => {
-                          setdob(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <div className="col-12 col-lg-12 col-md-12 form-group">
-                      <label htmlFor="birthday">Email</label>
-                      <input
-                        placeholder="Enter Email"
-                        type="email"
-                        value={email}
-                        className="form-control"
-                        onChange={(e) => {
-                          setEmail(e.target.value);
-                        }}
-                      />
-                    </div>
-
-                    <div className="col-12 col-lg-6 col-md-6 form-group">
-                      <label htmlFor="name">Password</label>
-                      <input
-                        placeholder="Enter Password"
-                        type="password"
-                        value={password}
-                        className="form-control"
-                        onChange={(e) => {
-                          setpassword(e.target.value);
-                        }}
-                      />
-                    </div>
-
-                    <div className="dropdown col-xl-6 col-lg-6 col-md-6">
-                      <label htmlFor="name">Gender</label>
-                      <select
-                        className="form-control"
-                        id="sel1"
-                        value={gender}
-                        onChange={(e) => {
-                          setgender(e.target.value);
-                        }}
-                      >
-                        <option>Male</option>
-                        <option>Female</option>
-                      </select>
                     </div>
                   </div>
                 </form>
@@ -309,7 +269,7 @@ const Admins = (props) => {
                   <Col>
                     <h3 className="mb-0">
                       <br />
-                      Admins
+                      Courses
                     </h3>
                   </Col>
                 </Row>
@@ -317,11 +277,10 @@ const Admins = (props) => {
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Firstname</th>
-                    <th scope="col">Lastname</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Mobile</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Title</th>
+                    {/* <th scope="col">Lastname</th>
+                    <th scope="col">Email</th> */}
+                    <th scope="col">Description</th>
                     <th scope="col" />
                     <th scope="col" />
                   </tr>
@@ -336,56 +295,70 @@ const Admins = (props) => {
                               <Media className="align-items-center">
                                 <Media>
                                   <span className="mb-0 text-sm">
-                                    {data.firstName}
+                                    {data.Title}
                                   </span>
                                 </Media>
                               </Media>
                             </th>
-                            <td>
+
+                            <td scope="row" style={{ width: "fit-content" }}>
                               <span className="mb-0 text-sm">
-                                {data.lastName}
+                                Lorem Ipsum is simply dummy text of the printing
+                                and typesetting industry. <br />
+                                Lorem Ipsum has been the industry's standard
+                                dummy text ever since the 1500s, <br />
+                                when an unknown <br />
+                                printer took a galley of type and scrambled it
+                                to make a type specimen book.
+                                <br /> It has survived not only five centuries,{" "}
+                                <br />
+                                but also the leap into electronic typesetting,
+                                remaining essentially unchanged.
                               </span>
                             </td>
-                            <td>
-                              <Badge color="" className="badge-dot mr-4">
-                                {data.email}
-                              </Badge>
-                            </td>
-                            <td>
-                              <Badge color="" className="badge-dot mr-4">
-                                {data.mobile}
-                              </Badge>
-                            </td>
 
-                            <td>
-                              <Badge color="" className="badge-dot mr-4">
-                                <i className="bg-warning" />
-                                {data.status}
-                              </Badge>
-                            </td>
+                            {currentAdmin !== undefined ? (
+                              currentAdmin.account.account.super === true ||
+                              currentAdmin.permissionss.includes(
+                                "Edit Admin"
+                              ) ? (
+                                <td
+                                  onClick={() => {
+                                    setAdminId(data.id);
+                                    setTitle(data.Title);
+                                    handleShow();
+                                  }}
+                                  className="icon-btn"
+                                >
+                                  <FontAwesomeIcon
+                                    className="btn-icon-only"
+                                    icon={faEdit}
+                                  />
+                                </td>
+                              ) : (
+                                <td></td>
+                              )
+                            ) : null}
 
-                            <td
-                              onClick={() => {
-                                setAdminId(data.id);
-                                alert(data.id);
-                                handleShow();
-                              }}
-                              className="icon-btn"
-                            >
-                              <FontAwesomeIcon
-                                className="btn-icon-only"
-                                icon={faEdit}
-                              />
-                            </td>
-
-                            <td
-                              className="icon-btn"
-                              onClick={() => {
-                                alert(data.id);
-                              }}
-                            >
-                              <FontAwesomeIcon icon={faTrash} />
-                            </td>
+                            {currentAdmin !== undefined ? (
+                              currentAdmin.account.account.super === true ||
+                              currentAdmin.permissionss.includes(
+                                "Delete Admin"
+                              ) ? (
+                                <td
+                                  className="icon-btn"
+                                  onClick={() => {
+                                    // setAdminId(data.id);
+                                    // alert(data.id);
+                                    deleteAdmin(data.id);
+                                  }}
+                                >
+                                  <FontAwesomeIcon icon={faTrash} />
+                                </td>
+                              ) : (
+                                <td></td>
+                              )
+                            ) : null}
                           </tr>
                         ) : null
                       )}

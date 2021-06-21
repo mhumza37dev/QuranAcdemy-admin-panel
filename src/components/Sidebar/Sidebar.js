@@ -14,6 +14,8 @@ import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import { Collapse as CL } from "@material-ui/core";
 
+import Avatar from "../../assets/img/theme/team-1-800x800.jpg";
+
 // reactstrap components
 import {
   Collapse,
@@ -45,6 +47,9 @@ const Sidebar = (props) => {
   const [open3, setOpen3] = React.useState(false);
   const [open4, setOpen4] = React.useState(false);
   const [open5, setOpen5] = React.useState(false);
+  const [open6, setOpen6] = React.useState(false);
+  const [open7, setOpen7] = React.useState(false);
+  const [open8, setOpen8] = React.useState(false);
   // verifies if routeName is the one active (in browser input)
 
   useEffect(() => {
@@ -84,11 +89,24 @@ const Sidebar = (props) => {
     setOpen5(!open5);
   }
 
+  function handleCoursesDrop() {
+    setOpen6(!open6);
+  }
+
+  function handleTeacherDrop() {
+    setOpen7(!open7);
+  }
+  function handleStudentsDrop() {
+    setOpen8(!open8);
+  }
+
+  // <i class=""></i>
+
   var rout = [
     {
       path: "/index",
       name: "Dashboard",
-      icon: "ni ni-tv-2 text-primary",
+      icon: "fa fa-desktop text-primary",
       component: Index,
       layout: "/admin",
     },
@@ -106,7 +124,8 @@ const Sidebar = (props) => {
           >
             <ListItem button>
               <ListItemIcon>
-                <i className={prop.icon} />
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABmJLR0QA/wD/AP+gvaeTAAABg0lEQVQ4jc2SOy8EURiGn+/MzrCUCteNKAg/aCvXiEoiblHpJDQiRCVxiaCyv8JvkJBQCMui0LKZNedTrF0zszusirea5H3nOe/5vgP/XVL5mFi66dDAG1GsE0u8HG1k9gDGFvNTKG1R2wTi+CeH631PAKmKYa07CboaOqMshYml/BmADWQ33khR1LoesBYBourVwCrWu/XKdZy6fvnfskz9RK2sujbJUzVVL5UUiqv40HnVnClsG7QzchDiO0ZOfw3M5SQAZn/KNQzMZtVJZwqbgnbEG2Jl9Xir67JhYJNnTLr/eei1qDMa8wRFhStgBUJLCQ82rtZWlyavlLhAEVv1Qs9GcioMGL6ewOeVHu/P2y9aeu4GE59NSFXg5wxGkoLj87c/wiLA0bnCEEaX6zUs5rsW4O53QESzgg7XG3pz9+NOQzRCSwkPtiYkyQv5pqH4xOtVrJTxATRIoIj4NUBjSgc28FwgHcmit4frmWuA8YX7aUV6Y7i30ntqv9Eb/L0+AKFrg/ymTyoLAAAAAElFTkSuQmCC" />
+                {/* <i className={prop.icon} /> */}
               </ListItemIcon>
               <ListItemText primary={prop.name} />
             </ListItem>
@@ -158,9 +177,9 @@ const Sidebar = (props) => {
         <Divider />
         {/* User */}
         <Nav className="align-items-center d-md-none">
-          <UncontrolledDropdown nav>
+          {/* <UncontrolledDropdown nav>
             <DropdownToggle nav className="nav-link-icon">
-              <i className="ni ni-bell-55" />
+     
             </DropdownToggle>
             <DropdownMenu
               aria-labelledby="navbar-default_dropdown_1"
@@ -172,7 +191,7 @@ const Sidebar = (props) => {
               <DropdownItem divider />
               <DropdownItem>Something else here</DropdownItem>
             </DropdownMenu>
-          </UncontrolledDropdown>
+          </UncontrolledDropdown> */}
           <UncontrolledDropdown nav>
             <DropdownToggle nav>
               <Media className="align-items-center">
@@ -180,9 +199,10 @@ const Sidebar = (props) => {
                   <img
                     alt="..."
                     src={
-                      require("../../assets/img/theme/team-4-800x800.jpg")
+                      require("../../assets/img/theme/team-1-800x800.jpg")
                         .default
                     }
+                    src={Avatar}
                   />
                 </span>
               </Media>
@@ -254,13 +274,13 @@ const Sidebar = (props) => {
             {/*parent condion start*/}
             {admin !== undefined ? (
               admin.account.account.super === true ||
-              admin.permissionss.includes("View Admins") ||
-              admin.permissionss.includes("Add Admins") ? (
+              admin.permissionss.includes("View Admin") ||
+              admin.permissionss.includes("Add Admin") ? (
                 <NavItem>
                   <NavLink>
                     <ListItem button onClick={handleAdminDrop}>
                       <ListItemIcon>
-                        <i class="fas fa-user-shield text-primary"></i>
+                        <i className="fas fa-user-shield text-primary"></i>
                       </ListItemIcon>
                       <ListItemText primary="Admins" />
                       {open2 ? (
@@ -273,32 +293,48 @@ const Sidebar = (props) => {
 
                   <CL in={open2} timeout="auto" unmountOnExit>
                     {admin.account.account.super === true ||
-                    admin.permissionss.includes("View Admins") ? (
+                    admin.permissionss.includes("View Admin") ? (
                       <NavItem>
                         <NavLink
-                          to={"/admin/View Admins"}
+                          to={"/admin/admins/all"}
                           tag={NavLinkRRD}
                           onClick={closeCollapse}
                           activeClassName="active"
                         >
                           <ListItem button>
-                            <ListItemText primary="View Admins" />
+                            <ListItemText primary="View Admin" />
                           </ListItem>
                         </NavLink>
                       </NavItem>
                     ) : null}
 
                     {admin.account.account.super === true ||
-                    admin.permissionss.includes("Add Admins") ? (
+                    admin.permissionss.includes("Add Admin") ? (
                       <NavItem>
                         <NavLink
-                          to={"/admin/Add Admins"}
+                          to={"/admin/admins/add"}
                           tag={NavLinkRRD}
                           onClick={closeCollapse}
                           activeClassName="active"
                         >
                           <ListItem button>
-                            <ListItemText primary="Add Admins" />
+                            <ListItemText primary="Add Admin" />
+                          </ListItem>
+                        </NavLink>
+                      </NavItem>
+                    ) : null}
+
+                    {admin.account.account.super === true ||
+                    admin.permissionss.includes("View Admin") ? (
+                      <NavItem>
+                        <NavLink
+                          to={"/admin/admins/blacklist"}
+                          tag={NavLinkRRD}
+                          onClick={closeCollapse}
+                          activeClassName="active"
+                        >
+                          <ListItem button>
+                            <ListItemText primary="Black List" />
                           </ListItem>
                         </NavLink>
                       </NavItem>
@@ -307,16 +343,15 @@ const Sidebar = (props) => {
                 </NavItem>
               ) : null
             ) : null}
-
             {admin !== undefined ? (
               admin.account.account.super === true ||
-              admin.permissionss.includes("Vew Permissions") ||
-              admin.permissionss.includes("add permissions") ? (
+              admin.permissionss.includes("Vew Permission") ||
+              admin.permissionss.includes("Add Permission") ? (
                 <NavItem>
                   <NavLink>
                     <ListItem button onClick={handlePermDrop}>
                       <ListItemIcon>
-                        <i class="fas fa-cogs text-primary"></i>
+                        <i class="fas fa-universal-access text-primary"></i>
                       </ListItemIcon>
                       <ListItemText primary="Permissions" />
                       {open5 ? (
@@ -329,10 +364,10 @@ const Sidebar = (props) => {
 
                   <CL in={open5} timeout="auto" unmountOnExit>
                     {admin.account.account.super === true ||
-                    admin.permissionss.includes("Vew Permissions") ? (
+                    admin.permissionss.includes("Vew Permission") ? (
                       <List>
                         <NavLink
-                          to={"/admin/Vew Permissions"}
+                          to={"/admin/permissions/all"}
                           tag={NavLinkRRD}
                           onClick={closeCollapse}
                           activeClassName="active"
@@ -345,32 +380,16 @@ const Sidebar = (props) => {
                     ) : null}
 
                     {admin.account.account.super === true ||
-                    admin.permissionss.includes("ADD Permissions") ? (
+                    admin.permissionss.includes("Add Permission") ? (
                       <NavItem>
                         <NavLink
-                          to={"/admin/Add Permissions"}
+                          to={"/admin/permissions/add"}
                           tag={NavLinkRRD}
                           onClick={closeCollapse}
                           activeClassName="active"
                         >
                           <ListItem button>
-                            <ListItemText primary="Add permissions" />
-                          </ListItem>
-                        </NavLink>
-                      </NavItem>
-                    ) : null}
-
-                    {admin.account.account.super === true ||
-                    admin.permissionss.includes("Assign Permissions") ? (
-                      <NavItem>
-                        <NavLink
-                          to={"/admin/Assign Permissions"}
-                          tag={NavLinkRRD}
-                          onClick={closeCollapse}
-                          activeClassName="active"
-                        >
-                          <ListItem button>
-                            <ListItemText primary="Assign permissions" />
+                            <ListItemText primary="Add Permissions" />
                           </ListItem>
                         </NavLink>
                       </NavItem>
@@ -379,11 +398,10 @@ const Sidebar = (props) => {
                 </NavItem>
               ) : null
             ) : null}
-
             {admin !== undefined ? (
               admin.account.account.super === true ||
-              admin.permissionss.includes("view roles") ||
-              admin.permissionss.includes("add roles") ? (
+              admin.permissionss.includes("view Role") ||
+              admin.permissionss.includes("add Role") ? (
                 <NavItem>
                   <NavLink>
                     <ListItem button onClick={handleRolesDrop}>
@@ -401,10 +419,11 @@ const Sidebar = (props) => {
 
                   <CL in={open4} timeout="auto" unmountOnExit>
                     {admin.account.account.super === true ||
-                    admin.permissionsss.includes("view roles") ? (
+                    admin.account.account.role_ids === true ||
+                    admin.permissionsss.includes("View Role") ? (
                       <NavItem>
                         <NavLink
-                          to={"/admin/view roles"}
+                          to={"/admin/roles/all"}
                           tag={NavLinkRRD}
                           onClick={closeCollapse}
                           activeClassName="active"
@@ -417,16 +436,16 @@ const Sidebar = (props) => {
                     ) : null}
 
                     {admin.account.account.super === true ||
-                    admin.permissions.includes("add roles") ? (
+                    admin.permissions.includes("Add Role") ? (
                       <NavItem>
                         <NavLink
-                          to={"/admin/add roles"}
+                          to={"/admin/roles/add"}
                           tag={NavLinkRRD}
                           onClick={closeCollapse}
                           activeClassName="active"
                         >
                           <ListItem button>
-                            <ListItemText primary="Add roles" />
+                            <ListItemText primary="Add Roles" />
                           </ListItem>
                         </NavLink>
                       </NavItem>
@@ -435,16 +454,16 @@ const Sidebar = (props) => {
                 </NavItem>
               ) : null
             ) : null}
-
             {admin !== undefined ? (
               admin.account.account.super === true ||
-              admin.permissionss.includes("View Classes") ||
-              admin.permissionss.includes("Add Classes") ? (
+              admin.permissionss.includes("View Class") ||
+              admin.permissionss.includes("Add Class") ? (
                 <NavItem>
                   <NavLink>
                     <ListItem button onClick={handleClassDrop}>
                       <ListItemIcon>
-                        <i class="fas fa-chalkboard-teacher text-primary"></i>
+                        <i class="fas fa-university text-primary"></i>
+                        {/* <i class="fas fa-chalkboard-teacher text-primary"></i> */}
                       </ListItemIcon>
 
                       <ListItemText primary="Classes" />
@@ -457,10 +476,10 @@ const Sidebar = (props) => {
                   </NavLink>
                   <CL in={open3} timeout="auto" unmountOnExit>
                     {admin.account.account.super === true ||
-                    admin.permissionss.includes("View Classes") ? (
+                    admin.permissionss.includes("View Class") ? (
                       <List>
                         <NavLink
-                          to={"/admin/View Classes"}
+                          to={"/admin/class/all"}
                           tag={NavLinkRRD}
                           onClick={closeCollapse}
                           activeClassName="active"
@@ -473,10 +492,10 @@ const Sidebar = (props) => {
                     ) : null}
 
                     {admin.account.account.super === true ||
-                    admin.permissionss.includes("Add Classes") ? (
+                    admin.permissionss.includes("Add Class") ? (
                       <NavItem>
                         <NavLink
-                          to={"/admin/Add Classes"}
+                          to={"/admin/class/add"}
                           tag={NavLinkRRD}
                           onClick={closeCollapse}
                           activeClassName="active"
@@ -491,8 +510,197 @@ const Sidebar = (props) => {
                 </NavItem>
               ) : null
             ) : null}
+            {admin !== undefined ? (
+              admin.account.account.super === true ||
+              admin.permissionss.includes("View Course") ||
+              admin.permissionss.includes("Add Course") ? (
+                <NavItem>
+                  <NavLink>
+                    <ListItem button onClick={handleCoursesDrop}>
+                      <ListItemIcon>
+                        <i class="fas fa-book-open text-primary"></i>
+                      </ListItemIcon>
+
+                      <ListItemText primary="Courses" />
+                      {open6 ? (
+                        <RemoveIcon style={{ paddingLeft: "10px" }} />
+                      ) : (
+                        <AddIcon style={{ paddingLeft: "10px" }} />
+                      )}
+                    </ListItem>
+                  </NavLink>
+                  <CL in={open6} timeout="auto" unmountOnExit>
+                    {admin.account.account.super === true ||
+                    admin.permissionss.includes("View Course") ? (
+                      <List>
+                        <NavLink
+                          to={"/admin/course/all"}
+                          tag={NavLinkRRD}
+                          onClick={closeCollapse}
+                          activeClassName="active"
+                        >
+                          <ListItem button>
+                            <ListItemText primary="View Courses" />
+                          </ListItem>
+                        </NavLink>
+                      </List>
+                    ) : null}
+
+                    {admin.account.account.super === true ||
+                    admin.permissionss.includes("Add Course") ? (
+                      <NavItem>
+                        <NavLink
+                          to={"/admin/course/add"}
+                          tag={NavLinkRRD}
+                          onClick={closeCollapse}
+                          activeClassName="active"
+                        >
+                          <ListItem button>
+                            <ListItemText primary="Add Courses" />
+                          </ListItem>
+                        </NavLink>
+                      </NavItem>
+                    ) : null}
+                  </CL>
+                </NavItem>
+              ) : null
+            ) : null}
+            {admin !== undefined ? (
+              admin.account.account.super === true ||
+              admin.permissionss.includes("View Teacher") ||
+              admin.permissionss.includes("Add Teacher") ? (
+                <NavItem>
+                  <NavLink>
+                    <ListItem button onClick={handleTeacherDrop}>
+                      <ListItemIcon>
+                        <i class="fas fa-chalkboard-teacher text-primary"></i>
+                      </ListItemIcon>
+
+                      <ListItemText primary="Teachers" />
+                      {open7 ? (
+                        <RemoveIcon style={{ paddingLeft: "10px" }} />
+                      ) : (
+                        <AddIcon style={{ paddingLeft: "10px" }} />
+                      )}
+                    </ListItem>
+                  </NavLink>
+                  <CL in={open7} timeout="auto" unmountOnExit>
+                    {admin.account.account.super === true ||
+                    admin.permissionss.includes("View Teacher") ? (
+                      <List>
+                        <NavLink
+                          to={"/admin/teachers/all"}
+                          tag={NavLinkRRD}
+                          onClick={closeCollapse}
+                          activeClassName="active"
+                        >
+                          <ListItem button>
+                            <ListItemText primary="View Teacher" />
+                          </ListItem>
+                        </NavLink>
+                      </List>
+                    ) : null}
+
+                    {admin.account.account.super === true ||
+                    admin.permissionss.includes("Add Teacher") ? (
+                      <NavItem>
+                        <NavLink
+                          to={"/admin/teachers/add"}
+                          tag={NavLinkRRD}
+                          onClick={closeCollapse}
+                          activeClassName="active"
+                        >
+                          <ListItem button>
+                            <ListItemText primary="Add Teachers" />
+                          </ListItem>
+                        </NavLink>
+                      </NavItem>
+                    ) : null}
+                  </CL>
+                </NavItem>
+              ) : null
+            ) : null}
+            {admin !== undefined ? (
+              admin.account.account.super === true ||
+              admin.permissionss.includes("View Student") ||
+              admin.permissionss.includes("Add Student") ? (
+                <NavItem>
+                  <NavLink>
+                    <ListItem button onClick={handleStudentsDrop}>
+                      <ListItemIcon>
+                        <i class="fas fa-user-graduate text-primary"></i>
+                      </ListItemIcon>
+
+                      <ListItemText primary="Student" />
+                      {open8 ? (
+                        <RemoveIcon style={{ paddingLeft: "10px" }} />
+                      ) : (
+                        <AddIcon style={{ paddingLeft: "10px" }} />
+                      )}
+                    </ListItem>
+                  </NavLink>
+                  <CL in={open8} timeout="auto" unmountOnExit>
+                    {admin.account.account.super === true ||
+                    admin.permissionss.includes("View Student") ? (
+                      <List>
+                        <NavLink
+                          to={"/admin/students/all"}
+                          tag={NavLinkRRD}
+                          onClick={closeCollapse}
+                          activeClassName="active"
+                        >
+                          <ListItem button>
+                            <ListItemText primary="View Students" />
+                          </ListItem>
+                        </NavLink>
+                      </List>
+                    ) : null}
+
+                    {admin.account.account.super === true ||
+                    admin.permissionss.includes("Add Student") ? (
+                      <NavItem>
+                        <NavLink
+                          to={"/admin/students/add"}
+                          tag={NavLinkRRD}
+                          onClick={closeCollapse}
+                          activeClassName="active"
+                        >
+                          <ListItem button>
+                            <ListItemText primary="Add Students" />
+                          </ListItem>
+                        </NavLink>
+                      </NavItem>
+                    ) : null}
+                  </CL>
+                </NavItem>
+              ) : null
+            ) : null}
 
             {/*parent condion close*/}
+            <Divider />
+            <NavItem
+            // style={{
+            //   bottom: "0",
+            //   clear: "both",
+            //   left: "0",
+            //   display: "block",
+            //   position: "fixed",
+            // }}
+            >
+              <NavLink
+                to={"/admin/Add Students"}
+                tag={NavLinkRRD}
+                onClick={closeCollapse}
+                // activeClassName="active"
+              >
+                <ListItem button>
+                  <ListItemIcon>
+                    <i class="fas fa-cogs text-primary"></i>
+                  </ListItemIcon>
+                  <ListItemText primary="Settings" />
+                </ListItem>
+              </NavLink>
+            </NavItem>
           </Nav>
         </Collapse>
       </Container>

@@ -6,8 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-import Skeleton from "@material-ui/lab/Skeleton";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import { makeStyles } from "@material-ui/core/styles";
 
 // reactstrap components
@@ -16,10 +14,6 @@ import {
   Card,
   CardHeader,
   CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
   Media,
   Pagination,
   PaginationItem,
@@ -74,8 +68,13 @@ const Admins = (props) => {
     props.history.push("/admin/404");
   }
 
+  // useEffect(() => {
+  //   console.log("admin", adminId);
+  //   deleteAdmin();
+  // }, [adminId]);
+
   useEffect(() => {
-    fetch("https://quran-server.herokuapp.com/admin/")
+    fetch(`https://quran-server.herokuapp.com/admin/`)
       .then((res) => res.json())
       .then((res) => {
         setFetchedAdmins(res);
@@ -84,7 +83,7 @@ const Admins = (props) => {
   }, [fetchedAdmins]);
 
   const edit = () => {
-    console.log(currentAdmin.jwtToken);
+    console.log(currentAdmin.account.jwtToken);
     // setAdminId(a);
     let url = `https://quran-server.herokuapp.com/admin/${adminId}`;
     if (adminId !== "") {
@@ -95,7 +94,7 @@ const Admins = (props) => {
         dataType: "JSON",
         headers: {
           "Content-Type": "application/json; charset=utf-8",
-          Authorization: `Bearer ${currentAdmin.jwtToken}`,
+          Authorization: `Bearer ${currentAdmin.account.jwtToken}`,
         },
         body: JSON.stringify({
           firstName: firstname,
@@ -114,45 +113,45 @@ const Admins = (props) => {
           console.log(res);
           setMessage(res.message);
           if (res.message === "Successfully Updated") {
-            localStorage.setItem("lastCallAt", Date.now);
+            localStorage.setItem("lastCallAt", Date.now());
             setAlertType("success");
             setOpen(true);
             setTimeout(() => {
-              setOpen(false);
-            }, 5000);
+              handleShow();
+            }, 1000);
           } else if (res.message === "Email is already in use") {
             setAlertType("warning");
             setOpen(true);
-            setTimeout(() => {
-              setOpen(false);
-            }, 5000);
+            // setTimeout(() => {
+            //   setOpen(false);
+            // }, 5000);
           } else if (res.message === "Phone Number is already in use") {
             setAlertType("warning");
             setOpen(true);
-            setTimeout(() => {
-              setOpen(false);
-            }, 5000);
+            // setTimeout(() => {
+            //   setOpen(false);
+            // }, 5000);
           } else {
             setAlertType("danger");
             setOpen(true);
-            setTimeout(() => {
-              setOpen(false);
-            }, 5000);
+            // setTimeout(() => {
+            //   setOpen(false);
+            // }, 5000);
           }
         });
     } else {
       setMessage("Wait a minute !!!! who are you ?????");
       setAlertType("danger");
       setOpen(true);
-      setTimeout(() => {
-        setOpen(false);
-      }, 5000);
+      // setTimeout(() => {
+      //   setOpen(false);
+      // }, 5000);
     }
   };
 
-  const deleteAdmin = () => {
+  const deleteAdmin = (adminid) => {
     console.log("delete function start");
-    fetch(`https://quran-server.herokuapp.com/admin/block/${adminId}`, {
+    fetch(`https://quran-server.herokuapp.com/admin/block/${adminid}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
@@ -163,7 +162,7 @@ const Admins = (props) => {
         console.log("response===> ", res);
         setMessage(res.message);
         if (res.message === "Account deleted successfully") {
-          localStorage.setItem("lastCallAt", Date.now);
+          localStorage.setItem("lastCallAt", Date.now());
           setAlertType("success");
           setOpen(true);
           setAdminId("");
@@ -192,6 +191,19 @@ const Admins = (props) => {
   const handleShow = () => setShow(true);
   const classes = useStyles();
 
+  function getFormattedDate(date) {
+    var date = new Date(date);
+    var year = date.getFullYear();
+
+    var month = (1 + date.getMonth()).toString();
+    month = month.length > 1 ? month : "0" + month;
+
+    var day = date.getDate().toString();
+    day = day.length > 1 ? day : "0" + day;
+
+    return year + "-" + month + "-" + day;
+  }
+
   return (
     <>
       <div className="header bg-gradient-dark pb-8 pt-5 pt-md-8"></div>
@@ -212,18 +224,19 @@ const Admins = (props) => {
               color={alertType}
               isOpen={open}
               onClick={() => setOpen(false)}
+              toggle={() => setOpen(false)}
             >
               {message}
             </Alert>
             <div>
               <div className="container justify-content-center">
-                <Alert
+                {/* <Alert
                   color={alertType}
                   isOpen={open}
                   onClick={() => setOpen(false)}
                 >
                   {message}
-                </Alert>
+                </Alert> */}
                 <div className="pb-5">
                   <h1 className="font-weight-bold fs">Update Admin</h1>
                   <div
@@ -277,6 +290,7 @@ const Admins = (props) => {
                       <input
                         placeholder="enter birthday"
                         type="Date"
+                        value={getFormattedDate(dob).toString()}
                         className="form-control"
                         onChange={(e) => {
                           setdob(e.target.value);
@@ -406,20 +420,30 @@ const Admins = (props) => {
 
                             <td>
                               <Badge color="" className="badge-dot mr-4">
-                                <i className="bg-warning" />
+                                {data.status === "Inactive" ? (
+                                  <i className="bg-warning" />
+                                ) : (
+                                  <i className="bg-success" />
+                                )}
                                 {data.status}
                               </Badge>
                             </td>
 
                             {currentAdmin !== undefined ? (
-                              currentAdmin.account.super === true ||
+                              currentAdmin.account.account.super === true ||
                               currentAdmin.permissionss.includes(
-                                "Edit Admins"
+                                "Edit Admin"
                               ) ? (
                                 <td
                                   onClick={() => {
                                     setAdminId(data.id);
-
+                                    setfirstname(data.firstName);
+                                    setlastname(data.lastName);
+                                    console.log(getFormattedDate(data.dob));
+                                    setEmail(data.email);
+                                    setdob(data.dob);
+                                    setmobile(data.mobile);
+                                    setgender(data.gender);
                                     handleShow();
                                   }}
                                   className="icon-btn"
@@ -435,16 +459,16 @@ const Admins = (props) => {
                             ) : null}
 
                             {currentAdmin !== undefined ? (
-                              currentAdmin.account.super === true ||
+                              currentAdmin.account.account.super === true ||
                               currentAdmin.permissionss.includes(
-                                "Delete Admins"
+                                "Delete Admin"
                               ) ? (
                                 <td
                                   className="icon-btn"
                                   onClick={() => {
-                                    setAdminId(data.id);
+                                    deleteAdmin(data.id);
                                     alert(data.id);
-                                    deleteAdmin();
+                                    // deleteAdmin();
                                   }}
                                 >
                                   <FontAwesomeIcon icon={faTrash} />
