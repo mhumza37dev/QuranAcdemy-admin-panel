@@ -31,12 +31,10 @@ import ResetPassword from "views/examples/ResetPassword";
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route path="/" component={Login} />
-
       <Route path="/admin" component={AdminLayout} />
       <Route path="/auth/signin" component={Login} />
       <Route path="/auth/reset" component={ResetPassword} />
-      {/* <Redirect from="/" to="/auth/signin" /> */}
+      <Redirect from="/" to="/auth/signin" />
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")
