@@ -25,14 +25,8 @@ import "assets/scss/argon-dashboard-react.scss";
 import "./assets/index.css";
 
 import AdminLayout from "layouts/Admin.js";
-// import AuthLayout from "layouts/Auth.js";
-import Register2 from "views/examples/Register2";
-import Register from "views/examples/Register";
 import Login from "views/examples/Login";
-import ForgotPassword from "views/examples/ForgotPassword";
 import ResetPassword from "views/examples/ResetPassword";
-import Maps from "views/examples/Maps";
-import Page404 from "views/examples/Page404";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -40,7 +34,6 @@ ReactDOM.render(
       <Route path="/admin" component={AdminLayout} />
       <Route path="/auth/signin" component={Login} />
       <Route path="/auth/reset" component={ResetPassword} />
-
       <Redirect from="/" to="/auth/signin" />
     </Switch>
   </BrowserRouter>,

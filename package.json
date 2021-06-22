@@ -8,9 +8,7 @@
     "url": "git+https://github.com/creativetimofficial/argon-dashboard-react.git"
   },
   "homepage": "https://mhumza37dev.github.io/QuranAcdemy-admin-panel",
-  "engines": {
-    "node": ">=10.0.0"
-  },
+
   "keywords": [
     "react",
     "react.js",
@@ -45,6 +43,10 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+  "engines": {
+    "node": "14.17.0",
+    "npm": "6.14.13"
+  },
   "dependencies": {
     "@agney/react-loading": "^0.1.2",
     "@fortawesome/fontawesome-free": "5.15.2",
