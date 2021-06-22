@@ -36,8 +36,6 @@ import {
 
 import Divider from "@material-ui/core/Divider";
 
-var ps;
-
 const Sidebar = (props) => {
   const [admin, setAdmin] = useState();
   const [collapseOpen, setCollapseOpen] = useState();
@@ -50,7 +48,6 @@ const Sidebar = (props) => {
   const [open6, setOpen6] = React.useState(false);
   const [open7, setOpen7] = React.useState(false);
   const [open8, setOpen8] = React.useState(false);
-  // verifies if routeName is the one active (in browser input)
 
   useEffect(() => {
     setAdmin(JSON.parse(localStorage.getItem("user")));
@@ -106,7 +103,7 @@ const Sidebar = (props) => {
     {
       path: "/index",
       name: "Dashboard",
-      icon: "fa fa-desktop text-primary",
+      icon: "fas fa-th-large text-primary",
       component: Index,
       layout: "/admin",
     },
@@ -124,8 +121,8 @@ const Sidebar = (props) => {
           >
             <ListItem button>
               <ListItemIcon>
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABmJLR0QA/wD/AP+gvaeTAAABg0lEQVQ4jc2SOy8EURiGn+/MzrCUCteNKAg/aCvXiEoiblHpJDQiRCVxiaCyv8JvkJBQCMui0LKZNedTrF0zszusirea5H3nOe/5vgP/XVL5mFi66dDAG1GsE0u8HG1k9gDGFvNTKG1R2wTi+CeH631PAKmKYa07CboaOqMshYml/BmADWQ33khR1LoesBYBourVwCrWu/XKdZy6fvnfskz9RK2sujbJUzVVL5UUiqv40HnVnClsG7QzchDiO0ZOfw3M5SQAZn/KNQzMZtVJZwqbgnbEG2Jl9Xir67JhYJNnTLr/eei1qDMa8wRFhStgBUJLCQ82rtZWlyavlLhAEVv1Qs9GcioMGL6ewOeVHu/P2y9aeu4GE59NSFXg5wxGkoLj87c/wiLA0bnCEEaX6zUs5rsW4O53QESzgg7XG3pz9+NOQzRCSwkPtiYkyQv5pqH4xOtVrJTxATRIoIj4NUBjSgc28FwgHcmit4frmWuA8YX7aUV6Y7i30ntqv9Eb/L0+AKFrg/ymTyoLAAAAAElFTkSuQmCC" />
-                {/* <i className={prop.icon} /> */}
+                {/* <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABmJLR0QA/wD/AP+gvaeTAAABg0lEQVQ4jc2SOy8EURiGn+/MzrCUCteNKAg/aCvXiEoiblHpJDQiRCVxiaCyv8JvkJBQCMui0LKZNedTrF0zszusirea5H3nOe/5vgP/XVL5mFi66dDAG1GsE0u8HG1k9gDGFvNTKG1R2wTi+CeH631PAKmKYa07CboaOqMshYml/BmADWQ33khR1LoesBYBourVwCrWu/XKdZy6fvnfskz9RK2sujbJUzVVL5UUiqv40HnVnClsG7QzchDiO0ZOfw3M5SQAZn/KNQzMZtVJZwqbgnbEG2Jl9Xir67JhYJNnTLr/eei1qDMa8wRFhStgBUJLCQ82rtZWlyavlLhAEVv1Qs9GcioMGL6ewOeVHu/P2y9aeu4GE59NSFXg5wxGkoLj87c/wiLA0bnCEEaX6zUs5rsW4O53QESzgg7XG3pz9+NOQzRCSwkPtiYkyQv5pqH4xOtVrJTxATRIoIj4NUBjSgc28FwgHcmit4frmWuA8YX7aUV6Y7i30ntqv9Eb/L0+AKFrg/ymTyoLAAAAAElFTkSuQmCC" /> */}
+                <i className={prop.icon} />
               </ListItemIcon>
               <ListItemText primary={prop.name} />
             </ListItem>
@@ -406,7 +403,7 @@ const Sidebar = (props) => {
                   <NavLink>
                     <ListItem button onClick={handleRolesDrop}>
                       <ListItemIcon>
-                        <i class="fas fa-user-tag text-primary"></i>
+                        <i class="fas fa-anchor text-primary"></i>
                       </ListItemIcon>
                       <ListItemText primary="Roles" />
                       {open4 ? (
@@ -678,17 +675,9 @@ const Sidebar = (props) => {
 
             {/*parent condion close*/}
             <Divider />
-            <NavItem
-            // style={{
-            //   bottom: "0",
-            //   clear: "both",
-            //   left: "0",
-            //   display: "block",
-            //   position: "fixed",
-            // }}
-            >
+            <NavItem>
               <NavLink
-                to={"/admin/Add Students"}
+                to={"/admin/settings"}
                 tag={NavLinkRRD}
                 onClick={closeCollapse}
                 // activeClassName="active"

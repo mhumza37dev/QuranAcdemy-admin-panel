@@ -12,14 +12,28 @@ import {
   Table,
   Container,
   Row,
+  Alert,
   Col,
   Button as BT,
 } from "reactstrap";
 import Page404 from "./Page404";
 
+import { Modal } from "react-bootstrap";
+
 const ClassDetail = (props) => {
   const [currentAdmin, setCurrentAdmin] = useState();
   const [selectedClass, setSelectedClass] = useState();
+  const [enrolledStudents, setEnrolledStudents] = useState();
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const [open, setOpen] = useState(false);
+  const [formState, setFormState] = useState();
+
+  const [paidStatus, setPaidStatus] = useState({
+    unPaid: "un-Paid",
+    Paid: "Paid",
+  });
 
   console.log("props==> ", props.location.state);
 
@@ -51,7 +65,14 @@ const ClassDetail = (props) => {
             props.location.state !== null
           ) {
             var resultObject = search(props.location.state.id, res);
-            console.log(resultObject);
+
+            setEnrolledStudents(
+              resultObject.students.map((data) => ({ ...data, isPaid: false }))
+            );
+            console.log(
+              resultObject.students.map((data) => ({ ...data, isPaid: false }))
+            );
+
             setSelectedClass(resultObject);
             console.log("selected class ===> ", selectedClass);
           }
@@ -59,12 +80,146 @@ const ClassDetail = (props) => {
     }
   }, []);
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   if (props.location.state === undefined || props.location.state === null) {
     return <Page404 />;
   } else {
     return (
       <>
         <div className="header bg-gradient-dark pb-8 pt-5 pt-md-8"></div>
+
+        <Modal
+          show={show}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+          size="xl"
+        >
+          <Modal.Header closeButton>
+            {/* <Modal.Title>Add New Admin</Modal.Title> */}
+          </Modal.Header>
+          <Modal.Body>
+            <div>
+              <Alert
+                color={alertType}
+                isOpen={open}
+                onClick={() => setOpen(false)}
+                toggle={() => setOpen(false)}
+              >
+                {message}
+              </Alert>
+              <div>
+                <div className="container justify-content-center">
+                  {/* <Alert
+                  color={alertType}
+                  isOpen={open}
+                  onClick={() => setOpen(false)}
+                >
+                  {message}
+                </Alert> */}
+                  <div className="pb-5">
+                    <h1 className="font-weight-bold fs">Update Admin</h1>
+                    <div
+                      style={{
+                        borderBottom: "5px solid #5e72e4",
+                        width: "95px",
+                      }}
+                    />
+                  </div>
+                  <form className="css-prp">
+                    <div className="row pb-lg-3 pb-md-3">
+                      <div className="col-12  col-lg-6 col-md-6 form-group">
+                        <label htmlFor="Name">First Name</label>
+                        <input
+                          placeholder="enter first name"
+                          type="name"
+                          className="form-control"
+                          onChange={(e) => {}}
+                        />
+                      </div>
+                      <div className="col-12 col-lg-6 col-md-6 form-group">
+                        <label htmlFor="name">Last Name</label>
+                        <input
+                          placeholder="enter last name"
+                          type="name"
+                          className="form-control"
+                          onChange={(e) => {}}
+                        />
+                      </div>
+                      <div className="col-12  col-lg-6 col-md-6 form-group">
+                        <label htmlFor="address">Mobile</label>
+                        <input
+                          placeholder="enter mobile number"
+                          type="text"
+                          className="form-control"
+                          onChange={(e) => {}}
+                        />
+                      </div>
+
+                      <div className="col-12 col-lg-6 col-md-6 form-group">
+                        <label htmlFor="birthday">Birthday</label>
+                        <input
+                          placeholder="enter birthday"
+                          type="Date"
+                          className="form-control"
+                          onChange={(e) => {}}
+                        />
+                      </div>
+                      <div className="col-12 col-lg-12 col-md-12 form-group">
+                        <label htmlFor="birthday">Email</label>
+                        <input
+                          placeholder="Enter Email"
+                          type="email"
+                          className="form-control"
+                          onChange={(e) => {}}
+                        />
+                      </div>
+
+                      <div className="col-12 col-lg-6 col-md-6 form-group">
+                        <label htmlFor="name">Password</label>
+                        <input
+                          placeholder="Enter Password"
+                          type="password"
+                          className="form-control"
+                          onChange={(e) => {}}
+                        />
+                      </div>
+
+                      <div className="dropdown col-xl-6 col-lg-6 col-md-6">
+                        <label htmlFor="name">Gender</label>
+                        <select
+                          className="form-control"
+                          id="sel1"
+                          onChange={(e) => {}}
+                        >
+                          <option>Male</option>
+                          <option>Female</option>
+                        </select>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <BT variant="secondary" onClick={handleClose}>
+              Close
+            </BT>
+            <BT
+              style={{ background: "#5e72e4", color: "white" }}
+              // onClick={displayStates}
+              onClick={() => {
+                // displayStates();
+                // edit();
+              }}
+            >
+              Update
+            </BT>
+          </Modal.Footer>
+        </Modal>
 
         <Container className="mt--7" fluid>
           <span></span>
@@ -74,10 +229,10 @@ const ClassDetail = (props) => {
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row xl="8">
-                    <Col xl="4">
+                    <Col>
                       <h3 className="mb-0">Details</h3>
                     </Col>
-                    {/* <Col className="col text-left">
+                    <Col className="col text-right">
                       <h5
                         className="mb-0 text-muted"
                         style={{ paddingLeft: "1%" }}
@@ -108,7 +263,7 @@ const ClassDetail = (props) => {
                         {selectedClass !== undefined &&
                           "Days : " + selectedClass.days}
                       </h5>
-                    </Col> */}
+                    </Col>
                   </Row>
                 </CardHeader>
 
@@ -123,7 +278,9 @@ const ClassDetail = (props) => {
                           <div className="col text-right">
                             <BT
                               color="primary"
-                              onClick={(e) => e.preventDefault()}
+                              onClick={(e) => {
+                                handleShow();
+                              }}
                               size="sm"
                             >
                               Enroll Student
@@ -144,51 +301,25 @@ const ClassDetail = (props) => {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <th scope="row">Muhammad Humza</th>
-                            <td>mhumza37@gmail.com</td>
-                            <td>340</td>
-                            <td>
-                              <i className="far fa-check-circle text-success mr-3" />{" "}
-                              Paid
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Muhammad Affan</th>
-                            <td>affan@gmail.com</td>
-                            <td>319</td>
-                            <td>
-                              <i className="far fa-times-circle text-warning mr-3" />{" "}
-                              Un-Paid
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Muneeb Ahmed</th>
-                            <td>muneeb@gmail.com</td>
-                            <td>294</td>
-                            <td>
-                              <i className="far fa-check-circle text-success mr-3" />{" "}
-                              Paid
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Yasir Khan</th>
-                            <td>yasir@gmail.com</td>
-                            <td>147</td>
-                            <td>
-                              <i className="far fa-times-circle text-warning mr-3" />{" "}
-                              un-Paid
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Jamil Phullani</th>
-                            <td>jamil@gmail.com</td>
-                            <td>190</td>
-                            <td>
-                              <i className="far fa-check-circle text-success mr-3" />{" "}
-                              Paid
-                            </td>
-                          </tr>
+                          {enrolledStudents !== undefined &&
+                            enrolledStudents.map((data) => (
+                              <tr>
+                                <th scope="row">
+                                  {data.firstName + " " + data.lastName}
+                                </th>
+                                <td>{data.email}</td>
+                                <td>319</td>
+                                <td>
+                                  {!data.isPaid ? (
+                                    <i className="far fa-times-circle text-warning mr-3" />
+                                  ) : (
+                                    <i className="far fa-times-circle text-success mr-3" />
+                                  )}
+
+                                  {!data.isPaid ? "Unpaid" : "paid"}
+                                </td>
+                              </tr>
+                            ))}
                         </tbody>
                       </Table>
                     </Card>

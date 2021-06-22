@@ -48,21 +48,18 @@ var routes = [
   {
     path: "/index",
     name: "Dashboard",
-    icon: "ni ni-tv-2 text-primary",
     component: Index,
     layout: "/admin",
   },
   {
     path: "/icons",
     name: "Icons",
-    icon: "ni ni-planet text-blue",
     component: Icons,
     layout: "/admin",
   },
   {
     path: "/maps",
     name: "Maps",
-    icon: "ni ni-pin-3 text-orange",
     component: Maps,
     layout: "/admin",
   },
@@ -70,7 +67,6 @@ var routes = [
   {
     path: "/admins/all",
     name: "Admins",
-    icon: "ni ni-bullet-list-67 text-red",
     component: Admins,
     layout: "/admin",
   },
@@ -78,14 +74,12 @@ var routes = [
   {
     path: "/admins/add",
     name: "Add Admins",
-    icon: "ni ni-bullet-list-67 text-red",
     component: AddAdmins,
     layout: "/admin",
   },
   {
     path: "/admins/blacklist",
     name: "Black List",
-    icon: "ni ni-bullet-list-67 text-red",
     component: BlackList,
     layout: "/admin",
   },
@@ -93,7 +87,6 @@ var routes = [
   {
     path: "/class/info",
     name: "Classes Detail",
-    icon: "ni ni-single-02 text-yellow",
     component: ClassDetail,
     layout: "/admin",
   },
@@ -101,21 +94,18 @@ var routes = [
   {
     path: "/class/all",
     name: "View Classes",
-    icon: "ni ni-single-02 text-yellow",
     component: Classes,
     layout: "/admin",
   },
   {
     path: "/class/add",
     name: "Add Classes",
-    icon: "ni ni-single-02 text-yellow",
     component: AddClasses,
     layout: "/admin",
   },
   {
     path: "/teachers/all",
     name: "ViewTeachers",
-    icon: "ni ni-bullet-list-67 text-red",
     component: Teacher,
     layout: "/admin",
   },
@@ -123,7 +113,6 @@ var routes = [
   {
     path: "/teachers/add",
     name: "Add Teachers",
-    icon: "ni ni-bullet-list-67 text-red",
     component: AddTeacher,
     layout: "/admin",
   },
@@ -131,7 +120,6 @@ var routes = [
   {
     path: "/students/all",
     name: "View Students",
-    icon: "ni ni-bullet-list-67 text-red",
     component: Students,
     layout: "/admin",
   },
@@ -139,7 +127,6 @@ var routes = [
   {
     path: "/students/add",
     name: "Add Students",
-    icon: "ni ni-bullet-list-67 text-red",
     component: AddStudents,
     layout: "/admin",
   },
@@ -147,28 +134,24 @@ var routes = [
   {
     path: "/permissions/all",
     name: "Permissions",
-    icon: "ni ni-bullet-list-67 text-red",
     component: Permissions,
     layout: "/admin",
   },
   {
     path: "/permissions/add",
     name: "Add Permissions",
-    icon: "ni ni-bullet-list-67 text-red",
     component: AddPermissions,
     layout: "/admin",
   },
   {
     path: "/roles/add",
     name: "Add Roles",
-    icon: "ni ni-bullet-list-67 text-red",
     component: AddRoles,
     layout: "/admin",
   },
   {
     path: "/roles/all",
     name: "View Roles",
-    icon: "ni ni-bullet-list-67 text-red",
     component: Roles,
     layout: "/admin",
   },
@@ -176,7 +159,6 @@ var routes = [
   {
     path: "/404",
     // name: "Not Found",
-    icon: "ni ni-bullet-list-67 text-red",
     component: Page404,
     layout: "/admin",
   },
@@ -184,7 +166,6 @@ var routes = [
   {
     path: "/course/all",
     name: "ViewCourses",
-    icon: "ni ni-bullet-list-67 text-red",
     component: Courses,
     layout: "/admin",
   },
@@ -192,7 +173,13 @@ var routes = [
   {
     path: "/course/add",
     name: "Add Courses",
-    icon: "ni ni-bullet-list-67 text-red",
+    component: AddCourses,
+    layout: "/admin",
+  },
+
+  {
+    path: "/settings",
+    name: "Settings",
     component: AddCourses,
     layout: "/admin",
   },
