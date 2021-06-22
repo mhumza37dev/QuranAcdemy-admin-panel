@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.css": "/QuranAcdemy-admin-panel/static/css/main.392c405e.chunk.css",
+    "main.js": "/QuranAcdemy-admin-panel/static/js/main.051309c0.chunk.js",
+    "main.js.map": "/QuranAcdemy-admin-panel/static/js/main.051309c0.chunk.js.map",
+    "runtime-main.js": "/QuranAcdemy-admin-panel/static/js/runtime-main.d57a5c4f.js",
+    "runtime-main.js.map": "/QuranAcdemy-admin-panel/static/js/runtime-main.d57a5c4f.js.map",
+    "static/css/2.a7695ab0.chunk.css": "/QuranAcdemy-admin-panel/static/css/2.a7695ab0.chunk.css",
+    "static/js/2.7cda0862.chunk.js": "/QuranAcdemy-admin-panel/static/js/2.7cda0862.chunk.js",
+    "static/js/2.7cda0862.chunk.js.map": "/QuranAcdemy-admin-panel/static/js/2.7cda0862.chunk.js.map",
+    "index.html": "/QuranAcdemy-admin-panel/index.html",
+    "precache-manifest.a144f2d2fc78011afe322aae8b5d6f00.js": "/QuranAcdemy-admin-panel/precache-manifest.a144f2d2fc78011afe322aae8b5d6f00.js",
+    "service-worker.js": "/QuranAcdemy-admin-panel/service-worker.js",
+    "static/css/2.a7695ab0.chunk.css.map": "/QuranAcdemy-admin-panel/static/css/2.a7695ab0.chunk.css.map",
+    "static/css/main.392c405e.chunk.css.map": "/QuranAcdemy-admin-panel/static/css/main.392c405e.chunk.css.map",
+    "static/js/2.7cda0862.chunk.js.LICENSE.txt": "/QuranAcdemy-admin-panel/static/js/2.7cda0862.chunk.js.LICENSE.txt",
+    "static/js/main.051309c0.chunk.js.LICENSE.txt": "/QuranAcdemy-admin-panel/static/js/main.051309c0.chunk.js.LICENSE.txt",
+    "static/media/all.min.css": "/QuranAcdemy-admin-panel/static/media/fa-solid-900.9ae050d1.woff2",
+    "static/media/nucleo.css": "/QuranAcdemy-admin-panel/static/media/nucleo-icons.f82ec6ba.ttf",
+    "static/media/team-1-800x800.jpg": "/QuranAcdemy-admin-panel/static/media/team-1-800x800.53033970.jpg",
+    "static/media/team-4-800x800.jpg": "/QuranAcdemy-admin-panel/static/media/team-4-800x800.23007132.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d57a5c4f.js",
+    "static/css/2.a7695ab0.chunk.css",
+    "static/js/2.7cda0862.chunk.js",
+    "static/css/main.392c405e.chunk.css",
+    "static/js/main.051309c0.chunk.js"
+  ]
+}
