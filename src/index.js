@@ -32,10 +32,10 @@ import Profile from "views/examples/Profile";
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route path="/" component={Profile} />
+      {/* <Route path="/" component={Login} /> */}
       <Route path="/admin" component={AdminLayout} />
       <Route path="/auth/signin" component={Login} />
-      <Route path="/auth/reset" component={ResetPassword} />
+      <Route path={["/", "/auth/reset"]} component={ResetPassword} />
       {/* <Redirect from="/" to="/auth/signin" /> */}
     </Switch>
   </BrowserRouter>,
