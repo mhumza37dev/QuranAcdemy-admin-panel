@@ -32,11 +32,15 @@ import Profile from "views/examples/Profile";
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route path="/" component={Profile} />
       <Route path="/admin" component={AdminLayout} />
       <Route path="/auth/signin" component={Login} />
       <Route path="/auth/reset" component={ResetPassword} />
-      {/* <Redirect from="/" to="/auth/signin" /> */}
+      {/* <Route component={Profile} /> */}
+      <Redirect
+        exact
+        from={["/", "/QuranAcdemy-admin-panel"]}
+        to="/auth/signin"
+      />
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")
