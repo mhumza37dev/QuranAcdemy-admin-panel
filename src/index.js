@@ -27,14 +27,16 @@ import "./assets/index.css";
 import AdminLayout from "layouts/Admin.js";
 import Login from "views/examples/Login";
 import ResetPassword from "views/examples/ResetPassword";
+import Profile from "views/examples/Profile";
 
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
+      <Route path="/" component={Profile} />
       <Route path="/admin" component={AdminLayout} />
       <Route path="/auth/signin" component={Login} />
       <Route path="/auth/reset" component={ResetPassword} />
-      <Redirect from="/" to="/auth/signin" />
+      {/* <Redirect from="/" to="/auth/signin" /> */}
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")
