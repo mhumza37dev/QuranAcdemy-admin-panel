@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 import { useLoading, Audio } from "@agney/react-loading";
 
@@ -68,17 +68,20 @@ const Admins = (props) => {
     props.history.push("/admin/404");
   }
 
-  // useEffect(() => {
-  //   console.log("admin", adminId);
-  //   deleteAdmin();
-  // }, [adminId]);
+  useMemo(() => setCurrentAdmin(JSON.parse(localStorage.getItem("user"))), []);
 
   useEffect(() => {
-    fetch(`https://quran-server.herokuapp.com/admin/`)
+    fetch(`https://quran-server.herokuapp.com/admin/`, {
+      method: "GET",
+      dataType: "JSON",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        Authorization: `Bearer ${currentAdmin.account.jwtToken}`,
+      },
+    })
       .then((res) => res.json())
       .then((res) => {
         setFetchedAdmins(res);
-        setCurrentAdmin(JSON.parse(localStorage.getItem("user")));
       });
   }, [fetchedAdmins]);
 

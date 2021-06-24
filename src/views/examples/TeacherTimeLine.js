@@ -21,7 +21,7 @@ import Page404 from "./Page404";
 import { Chrono } from "react-chrono";
 
 import PropTypes from "prop-types";
-import Timeline from "components/TimeLine/Teacher/Timeline";
+import Timeline from "../../components/TimeLine/Teacher/Timeline";
 
 TeacherTimeLine.propTypes = {};
 
@@ -75,7 +75,7 @@ function TeacherTimeLine(props) {
           console.log("selected class ===> ", selectedClass);
         }
       });
-  }, [selectedClass]);
+  }, []);
 
   if (props.location.state === undefined || props.location.state === null) {
     return <Page404 />;
