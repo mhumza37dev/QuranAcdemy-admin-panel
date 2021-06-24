@@ -102,9 +102,9 @@ const Timeline = (props) => {
       },
     },
   ];
-  return props.students.length > 2 ? (
+  return props.students.length > 0 ? (
     <div className="timeline-container">
-      {props.classes.map((data, idx) => (
+      {props.students.map((data, idx) => (
         <TimelineItem data={data} key={idx} />
       ))}
     </div>

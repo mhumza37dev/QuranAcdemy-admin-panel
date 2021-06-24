@@ -45,9 +45,9 @@ ReactDOM.render(
     <Faviconn />
 
     <Switch>
-      <Route path="/admin" component={AdminLayout} />
-      <Route path="/auth/signin" component={Login} />
-      <Route path="/auth/reset" component={ResetPassword} />
+      <Route exact path="/admin" component={AdminLayout} />
+      <Route exact path="/auth/signin" component={Login} />
+      <Route exact path="/auth/reset" component={ResetPassword} />
       {/* <Route component={Profile} /> */}
       <Redirect
         exact

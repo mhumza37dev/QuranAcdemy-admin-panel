@@ -16,12 +16,16 @@ import {
   Col,
   Button as BT,
 } from "reactstrap";
+import Rating from "@material-ui/lab/Rating";
+
 import Page404 from "./Page404";
 import Timeline from "components/TimeLine/Student/Timeline";
 
 const StudentTimeLine = (props) => {
   const [currentAdmin, setCurrentAdmin] = useState();
   const [selectedClass, setSelectedClass] = useState();
+
+  const [enrolledStudents, setEnrolledStudents] = useState();
 
   console.log("props==> ", props.location.state);
 
@@ -33,7 +37,10 @@ const StudentTimeLine = (props) => {
     }
   }
 
-  useMemo(() => setCurrentAdmin(JSON.parse(localStorage.getItem("user"))), []);
+  useMemo(() => {
+    setCurrentAdmin(JSON.parse(localStorage.getItem("user")));
+    console.log("useMemo");
+  }, []);
 
   useEffect(() => {
     fetch(`https://quran-server.herokuapp.com/admin/students`, {
@@ -52,9 +59,9 @@ const StudentTimeLine = (props) => {
           props.location.state !== null
         ) {
           var resultObject = search(props.location.state.id, res);
-          //   setEnrolledStudents(
-          //     resultObject.students.map((data) => ({ ...data, isPaid: false }))
-          //   );
+          setEnrolledStudents(
+            resultObject.class_ids.map((data) => ({ ...data }))
+          );
           //   console.log(
           //     resultObject.students.map((data) => ({ ...data, isPaid: false }))
           //   );
@@ -117,59 +124,97 @@ const StudentTimeLine = (props) => {
                 </CardHeader>
 
                 <Row className="mt-5" style={{ margin: "2%" }}>
-                  <Col className="mb-5 mb-xl-0" xl="12">
-                    {/* <Card className="shadow"> */}
-                    <CardHeader className="border-0">
-                      {/* <Row className="align-items-center"> */}
-                      <div className="col ">
-                        <h1 className="mb-0 text-center">Classes</h1>
-                      </div>
-                      <div className="col text-right"></div>
-                      {/* </Row> */}
-                    </CardHeader>
-                    {selectedClass !== undefined && (
+                  <Col className="mb-5 mb-xl-0" xl="10">
+                    <Card className="shadow">
+                      <CardHeader className="border-0">
+                        <Row className="align-items-center">
+                          <div className="col ">
+                            <h3 className="mb-0 ">All Classes</h3>
+                          </div>
+                          <div className="col text-right"></div>
+                        </Row>
+                      </CardHeader>
+                      {/* {selectedClass !== undefined && (
                       <Timeline
                         name={
                           selectedClass.firstName + " " + selectedClass.lastName
                         }
                         students={selectedClass.class_ids}
                       />
-                    )}
-                    {/* <Table
+                    )} */}
+                      <Table
                         className="align-items-center table-flush"
                         responsive
                       >
                         <thead className="thead-light">
                           <tr>
-                            <th scope="col">Student name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Unique users</th>
-                            <th scope="col">Status</th>
+                            {/* <th scope="col">Student name</th> */}
+                            <th scope="col">courses</th>
+                            <th scope="col">subscription_type</th>
+                            <th scope="col">days</th>
+                            <th>Status</th>
                           </tr>
                         </thead>
-                        {<tbody>
-                          enrolledStudents !== undefined &&
+                        <tbody>
+                          {enrolledStudents !== undefined &&
                             enrolledStudents.map((data) => (
                               <tr>
-                                <th scope="row">
+                                {/* <th scope="row">
                                   {data.firstName + " " + data.lastName}
-                                </th>
-                                <td>{data.email}</td>
-                                <td>319</td>
+                                </th> */}
+                                <td>{data.course.Title}</td>
+                                <td>{data.subscription_type}</td>
+                                <td>{data.days}</td>
                                 <td>
-                                  {!data.isPaid ? (
+                                  {!data ? (
                                     <i className="far fa-times-circle text-warning mr-3" />
                                   ) : (
-                                    <i className="far fa-times-circle text-success mr-3" />
+                                    <i className="far fa-check-circle text-success mr-3" />
                                   )}
 
-                                  {!data.isPaid ? "Unpaid" : "paid"}
+                                  {!data ? "expired" : "ongoing"}
                                 </td>
                               </tr>
                             ))}
                         </tbody>
-                      </Table> */}
-                    {/* </Card> */}
+                      </Table>
+                    </Card>
+                  </Col>
+
+                  <Col className="mb-5 mb-xl-0" xl="2">
+                    <Card className="shadow">
+                      <CardHeader className="border-0">
+                        <Row className="align-items-center">
+                          <div className="col ">
+                            <h3 className="mb-0 ">Certifications</h3>
+                          </div>
+                          <div className="col text-right"></div>
+                        </Row>
+                      </CardHeader>
+                      <Table
+                        className="align-items-center table-flush"
+                        responsive
+                      >
+                        <thead className="thead-light">
+                          <tr>
+                            {/* <th scope="col">Student name</th> */}
+                            <th scope="col">courses</th>
+                            {/* <th scope="col">Ratings</th> */}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {enrolledStudents !== undefined &&
+                            enrolledStudents.map((data) => (
+                              <tr>
+                                <td>{data.course.Title}</td>
+                                {/* <td>
+                                  <Rating name="hover-feedback" value={5} />
+                                </td> */}
+                              </tr>
+                            ))}
+                        </tbody>
+                      </Table>
+                    </Card>
                   </Col>
                 </Row>
 
