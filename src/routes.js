@@ -43,6 +43,8 @@ import AddStudents from "views/examples/AddStudents";
 import Courses from "views/examples/Courses";
 import AddCourses from "views/examples/AddCourses";
 import ClassDetail from "views/examples/ClassDetail";
+import TeacherTimeLine from "views/examples/TeacherTimeLine";
+import StudentTimeLine from "views/examples/StudentTimeLine";
 
 var routes = [
   {
@@ -116,6 +118,12 @@ var routes = [
     component: AddTeacher,
     layout: "/admin",
   },
+  {
+    path: "/teachers/timeline",
+    name: "Teacher TimeLine",
+    component: TeacherTimeLine,
+    layout: "/admin",
+  },
 
   {
     path: "/students/all",
@@ -128,6 +136,12 @@ var routes = [
     path: "/students/add",
     name: "Add Students",
     component: AddStudents,
+    layout: "/admin",
+  },
+  {
+    path: "/students/timeline",
+    name: "Student TimeLine",
+    component: StudentTimeLine,
     layout: "/admin",
   },
 
@@ -143,6 +157,7 @@ var routes = [
     component: AddPermissions,
     layout: "/admin",
   },
+
   {
     path: "/roles/add",
     name: "Add Roles",

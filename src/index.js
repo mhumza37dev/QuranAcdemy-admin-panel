@@ -15,8 +15,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState, useMemo } from "react";
 import ReactDOM from "react-dom";
+import Favicon from "react-favicon";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import "assets/plugins/nucleo/css/nucleo.css";
@@ -29,8 +30,20 @@ import Login from "views/examples/Login";
 import ResetPassword from "views/examples/ResetPassword";
 import Profile from "views/examples/Profile";
 
+function Faviconn() {
+  const [favicon, setFavicon] = useState("");
+
+  useMemo(
+    () => setFavicon("http://oflisback.github.io/react-favicon/img/github.ico"),
+    []
+  );
+  return <Favicon url={favicon} />;
+}
+
 ReactDOM.render(
   <BrowserRouter>
+    <Faviconn />
+
     <Switch>
       <Route path="/admin" component={AdminLayout} />
       <Route path="/auth/signin" component={Login} />

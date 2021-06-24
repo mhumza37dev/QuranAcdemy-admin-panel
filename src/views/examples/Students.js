@@ -394,7 +394,15 @@ const Admins = (props) => {
                     ? null
                     : fetchedAdmins.map((data) =>
                         data.status !== "blocked" ? (
-                          <tr key={data.id}>
+                          <tr
+                            key={data.id}
+                            onClick={() =>
+                              props.history.push(
+                                "/admin/students/timeline",
+                                data
+                              )
+                            }
+                          >
                             <th scope="row">
                               <Media className="align-items-center">
                                 <Media>

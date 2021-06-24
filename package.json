@@ -44,7 +44,7 @@
   ],
   "engines": {
     "node": "14.x",
-    "npm" : "6.14.13"
+    "npm": "6.14.13"
   },
   "dependencies": {
     "@agney/react-loading": "^0.1.2",
@@ -71,9 +71,11 @@
     "react": "17.0.1",
     "react-bootstrap": "^1.6.0",
     "react-chartjs-2": "2.11.1",
+    "react-chrono": "^1.10.0",
     "react-copy-to-clipboard": "5.0.3",
     "react-datetime": "3.0.4",
     "react-dom": "17.0.1",
+    "react-favicon": "^0.0.23",
     "react-router-dom": "5.2.0",
     "react-scripts": "3.4.4",
     "react-simple-hook-modal": "^1.1.0",

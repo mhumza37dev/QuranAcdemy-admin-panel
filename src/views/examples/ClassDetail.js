@@ -95,7 +95,7 @@ const ClassDetail = (props) => {
           onHide={handleClose}
           backdrop="static"
           keyboard={false}
-          size="xl"
+          size="xs"
         >
           <Modal.Header closeButton>
             {/* <Modal.Title>Add New Admin</Modal.Title> */}
@@ -120,83 +120,58 @@ const ClassDetail = (props) => {
                   {message}
                 </Alert> */}
                   <div className="pb-5">
-                    <h1 className="font-weight-bold fs">Update Admin</h1>
+                    <h1 className="font-weight-bold fs">
+                      Enroll Students to Class
+                    </h1>
                     <div
                       style={{
                         borderBottom: "5px solid #5e72e4",
-                        width: "95px",
+                        width: "85px",
                       }}
                     />
                   </div>
                   <form className="css-prp">
                     <div className="row pb-lg-3 pb-md-3">
-                      <div className="col-12  col-lg-6 col-md-6 form-group">
-                        <label htmlFor="Name">First Name</label>
-                        <input
-                          placeholder="enter first name"
-                          type="name"
-                          className="form-control"
-                          onChange={(e) => {}}
-                        />
-                      </div>
-                      <div className="col-12 col-lg-6 col-md-6 form-group">
-                        <label htmlFor="name">Last Name</label>
-                        <input
-                          placeholder="enter last name"
-                          type="name"
-                          className="form-control"
-                          onChange={(e) => {}}
-                        />
-                      </div>
-                      <div className="col-12  col-lg-6 col-md-6 form-group">
-                        <label htmlFor="address">Mobile</label>
-                        <input
-                          placeholder="enter mobile number"
-                          type="text"
-                          className="form-control"
-                          onChange={(e) => {}}
-                        />
-                      </div>
-
-                      <div className="col-12 col-lg-6 col-md-6 form-group">
-                        <label htmlFor="birthday">Birthday</label>
-                        <input
-                          placeholder="enter birthday"
-                          type="Date"
-                          className="form-control"
-                          onChange={(e) => {}}
-                        />
-                      </div>
-                      <div className="col-12 col-lg-12 col-md-12 form-group">
-                        <label htmlFor="birthday">Email</label>
-                        <input
-                          placeholder="Enter Email"
-                          type="email"
-                          className="form-control"
-                          onChange={(e) => {}}
-                        />
-                      </div>
-
-                      <div className="col-12 col-lg-6 col-md-6 form-group">
-                        <label htmlFor="name">Password</label>
-                        <input
-                          placeholder="Enter Password"
-                          type="password"
-                          className="form-control"
-                          onChange={(e) => {}}
-                        />
-                      </div>
-
-                      <div className="dropdown col-xl-6 col-lg-6 col-md-6">
-                        <label htmlFor="name">Gender</label>
+                      <div className="dropdown col-xl-12 col-lg-6 col-md-6">
+                        <label htmlFor="Students">Select Students</label>
                         <select
                           className="form-control"
                           id="sel1"
                           onChange={(e) => {}}
                         >
-                          <option>Male</option>
+                          <option>students</option>
+                          <option>Female</option>
+                          <option>Female</option>
+
+                          <option>Female</option>
+                          <option>Female</option>
+                          <option>Female</option>
+                          <option>Female</option>
+                          <option>Female</option>
+                          <option>Female</option>
                           <option>Female</option>
                         </select>
+                      </div>
+
+                      <div className="col-12 col-lg-12 col-md-6 form-group">
+                        <div className="wrapper">
+                          <label htmlFor="status">Status</label>
+                          <input
+                            type="radio"
+                            name="select"
+                            id="option-1"
+                            defaultChecked
+                          />
+                          <input type="radio" name="select" id="option-2" />
+                          <label htmlFor="option-1" className="option option-1">
+                            <div className="dot" />
+                            <span>Paid</span>
+                          </label>
+                          <label htmlFor="option-2" className="option option-2">
+                            <div className="dot" />
+                            <span>Unpaid</span>
+                          </label>
+                        </div>
                       </div>
                     </div>
                   </form>
