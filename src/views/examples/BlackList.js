@@ -117,30 +117,18 @@ const Admins = (props) => {
           } else if (res.message === "Email is already in use") {
             setAlertType("warning");
             setOpen(true);
-            // setTimeout(() => {
-            //   setOpen(false);
-            // }, 5000);
           } else if (res.message === "Phone Number is already in use") {
             setAlertType("warning");
             setOpen(true);
-            // setTimeout(() => {
-            //   setOpen(false);
-            // }, 5000);
           } else {
             setAlertType("danger");
             setOpen(true);
-            // setTimeout(() => {
-            //   setOpen(false);
-            // }, 5000);
           }
         });
     } else {
       setMessage("Wait a minute !!!! who are you ?????");
       setAlertType("danger");
       setOpen(true);
-      // setTimeout(() => {
-      //   setOpen(false);
-      // }, 5000);
     }
   };
 

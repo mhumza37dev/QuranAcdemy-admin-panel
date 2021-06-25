@@ -45,6 +45,7 @@ import AddCourses from "views/examples/AddCourses";
 import ClassDetail from "views/examples/ClassDetail";
 import TeacherTimeLine from "views/examples/TeacherTimeLine";
 import StudentTimeLine from "views/examples/StudentTimeLine";
+import Settings from "views/examples/Settings";
 
 var routes = [
   {
@@ -195,7 +196,7 @@ var routes = [
   {
     path: "/settings",
     name: "Settings",
-    component: AddCourses,
+    component: Settings,
     layout: "/admin",
   },
 ];
