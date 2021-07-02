@@ -143,6 +143,7 @@ const Login = (props) => {
                     placeholder="Email"
                     type="email"
                     autoComplete="email"
+                    autoFocus
                     onChange={(e) => {
                       setemail(e.target.value);
                     }}
@@ -159,7 +160,7 @@ const Login = (props) => {
                   <Input
                     placeholder="Password"
                     type="password"
-                    autoComplete="new-password"
+                    autoComplete="password"
                     onChange={(e) => {
                       setpass(e.target.value);
                     }}

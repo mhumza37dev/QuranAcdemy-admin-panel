@@ -38,7 +38,8 @@ const Classes = (props) => {
         console.log(res);
         setFetchedClasses(res);
       });
-  }, []);
+    console.log(fetch);
+  }, [fetchedClasses]);
 
   const deleteAdmin = (adminid) => {
     console.log("delete function start");
@@ -76,7 +77,7 @@ const Classes = (props) => {
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Title</th>
+                    <th scope="col">Course Title</th>
                     <th scope="col">Teacher</th>
                     <th scope="col">Time Slot</th>
                     <th scope="col">Days</th>
@@ -102,7 +103,9 @@ const Classes = (props) => {
                              */}
                             <Media>
                               <span className="mb-0 text-sm">
-                                {data.course.Title}
+                                {data.course !== null
+                                  ? data.course.Title
+                                  : '{"No course for this id in DB"}'}
                               </span>
                             </Media>
                           </Media>

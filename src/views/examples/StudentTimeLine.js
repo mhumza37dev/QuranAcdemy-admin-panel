@@ -24,10 +24,12 @@ import Timeline from "components/TimeLine/Student/Timeline";
 const StudentTimeLine = (props) => {
   const [currentAdmin, setCurrentAdmin] = useState();
   const [selectedClass, setSelectedClass] = useState();
+  const [certifications, setCertifications] = useState([]);
+  const [certifications2, setCertifications2] = useState();
 
   const [enrolledStudents, setEnrolledStudents] = useState();
 
-  console.log("props==> ", props.location.state);
+  // console.log("props==> ", props.location.state);
 
   function search(nameKey, myArray) {
     for (var i = 0; i < myArray.length; i++) {
@@ -39,7 +41,7 @@ const StudentTimeLine = (props) => {
 
   useMemo(() => {
     setCurrentAdmin(JSON.parse(localStorage.getItem("user")));
-    console.log("useMemo");
+    // console.log("useMemo");
   }, []);
 
   useEffect(() => {
@@ -62,12 +64,18 @@ const StudentTimeLine = (props) => {
           setEnrolledStudents(
             resultObject.class_ids.map((data) => ({ ...data }))
           );
+
+          setCertifications(
+            resultObject.class_ids.map((data) => data.course.Title)
+          );
+
+          // console.log("certifications===> ", certifications2);
           //   console.log(
           //     resultObject.students.map((data) => ({ ...data, isPaid: false }))
           //   );
-          console.log("cclass_ids", resultObject.class_ids);
+          // console.log("class_ids", resultObject.class_ids);
           setSelectedClass(resultObject);
-          console.log("selected class ===> ", selectedClass);
+          // console.log("selected class ===> ", selectedClass);
         }
       });
   }, []);
@@ -203,15 +211,17 @@ const StudentTimeLine = (props) => {
                           </tr>
                         </thead>
                         <tbody>
-                          {enrolledStudents !== undefined &&
-                            enrolledStudents.map((data) => (
-                              <tr>
-                                <td>{data.course.Title}</td>
-                                {/* <td>
+                          {certifications !== undefined &&
+                            certifications
+                              .filter((v, i) => certifications.indexOf(v) == i)
+                              .map((data) => (
+                                <tr>
+                                  <td>{data}</td>
+                                  {/* <td>
                                   <Rating name="hover-feedback" value={5} />
                                 </td> */}
-                              </tr>
-                            ))}
+                                </tr>
+                              ))}
                         </tbody>
                       </Table>
                     </Card>

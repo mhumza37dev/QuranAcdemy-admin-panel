@@ -17,7 +17,7 @@ import {
   Button as BT,
 } from "reactstrap";
 import Page404 from "./Page404";
-
+import Calendar from "react-material-ui-calendar";
 import { Modal } from "react-bootstrap";
 
 const ClassDetail = (props) => {
@@ -29,11 +29,14 @@ const ClassDetail = (props) => {
   const [alertType, setAlertType] = useState("");
   const [open, setOpen] = useState(false);
   const [formState, setFormState] = useState();
-
+  const [allStudents, setAllStudents] = useState();
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [stdToEnroll, setStdToEnroll] = useState();
   const [paidStatus, setPaidStatus] = useState({
     unPaid: "un-Paid",
     Paid: "Paid",
   });
+  const [date, setDate] = useState();
 
   console.log("props==> ", props.location.state);
 
@@ -77,8 +80,95 @@ const ClassDetail = (props) => {
             console.log("selected class ===> ", selectedClass);
           }
         });
+
+      fetch("https://quran-server.herokuapp.com/admin/students", {
+        method: "GET",
+        dataType: "JSON",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${currentAdmin.account.jwtToken}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          setAllStudents(res);
+          console.log(res);
+        });
     }
   }, []);
+
+  const callBackFunction = (value) => {
+    if (value.getMonth() < 10) {
+      if (value.getDate() < 10) {
+        props.history.push("/admin/class/attendance", {
+          class: selectedClass.id,
+          students: enrolledStudents.map((std) => std.id),
+          date:
+            value.getFullYear() +
+            "-0" +
+            (parseInt(value.getMonth()) + 1).toString() +
+            "-0" +
+            value.getDate(),
+        });
+      } else {
+        props.history.push("/admin/class/attendance", {
+          class: selectedClass.id,
+          students: enrolledStudents.map((std) => std.id),
+          date:
+            value.getFullYear() +
+            "-0" +
+            (parseInt(value.getMonth()) + 1).toString() +
+            "-" +
+            value.getDate(),
+        });
+      }
+    } else {
+      props.history.push("/admin/class/attendance", {
+        class: selectedClass.id,
+        students: enrolledStudents.map((std) => std.id),
+        date:
+          value.getFullYear() +
+          "-" +
+          (parseInt(value.getMonth()) + 1).toString() +
+          "-" +
+          value.getDate(),
+      });
+    }
+  };
+
+  const addStudents = () => {
+    if (stdToEnroll === undefined) {
+      setAlertType("warning");
+      setMessage("Select student first");
+      setOpen(true);
+    }
+    fetch("https://quran-server.herokuapp.com/admin/class/addstudentstoclass", {
+      method: "PUT",
+      dataType: "JSON",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        Authorization: `Bearer ${currentAdmin.account.jwtToken}`,
+      },
+      body: JSON.stringify({
+        id: selectedClass.id,
+        students: stdToEnroll,
+        fee_status: "unpaid",
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        if (res.message === "Successfully Enrolled") {
+          setAlertType("success");
+          setMessage(res.message);
+          setOpen(true);
+        } else {
+          setAlertType("danger");
+          setMessage(res.message);
+          setOpen(true);
+        }
+      });
+  };
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -137,19 +227,18 @@ const ClassDetail = (props) => {
                         <select
                           className="form-control"
                           id="sel1"
-                          onChange={(e) => {}}
+                          value={stdToEnroll}
+                          onChange={(e) => {
+                            setStdToEnroll(e.target.value);
+                          }}
                         >
-                          <option>students</option>
-                          <option>Female</option>
-                          <option>Female</option>
-
-                          <option>Female</option>
-                          <option>Female</option>
-                          <option>Female</option>
-                          <option>Female</option>
-                          <option>Female</option>
-                          <option>Female</option>
-                          <option>Female</option>
+                          <option value={undefined}>students</option>
+                          {allStudents !== undefined &&
+                            allStudents.map((std) => (
+                              <option key={std.id} value={std.id}>
+                                {std.firstName + " " + std.lastName}
+                              </option>
+                            ))}
                         </select>
                       </div>
 
@@ -189,10 +278,38 @@ const ClassDetail = (props) => {
               onClick={() => {
                 // displayStates();
                 // edit();
+                addStudents();
               }}
             >
               Update
             </BT>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal
+          show={showCalendar}
+          onHide={() => setShowCalendar(false)}
+          backdrop="static"
+          keyboard={false}
+          size="xl"
+        >
+          <Modal.Header closeButton>Select Date</Modal.Header>
+          <Modal.Body>
+            <Calendar
+              generalStyle={{
+                maxWidth: "100%",
+                margin: "0 auto",
+                backgroundColor: "rgba(256,256,256,1)",
+                height: "100%",
+                overflow: "auto",
+              }}
+              selection={callBackFunction}
+              light={true}
+            />
+          </Modal.Body>
+
+          <Modal.Footer>
+            <BT onClick={() => setShowCalendar(false)}>close</BT>
           </Modal.Footer>
         </Modal>
 
@@ -273,6 +390,7 @@ const ClassDetail = (props) => {
                             <th scope="col">Email</th>
                             <th scope="col">Unique users</th>
                             <th scope="col">Status</th>
+                            <th>Attendance</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -293,6 +411,11 @@ const ClassDetail = (props) => {
 
                                   {!data.isPaid ? "Unpaid" : "paid"}
                                 </td>
+                                <td>
+                                  <BT size="sm" onClick={() => {}}>
+                                    View
+                                  </BT>
+                                </td>
                               </tr>
                             ))}
                         </tbody>
@@ -307,7 +430,11 @@ const ClassDetail = (props) => {
                       {/* <Card className="shadow"> */}
 
                       <Row xl="2">
-                        <Col></Col>
+                        <Col>
+                          <BT onClick={(value) => setShowCalendar(true)}>
+                            Manage attendance
+                          </BT>
+                        </Col>
                         <Col className="col text-right">
                           <h5
                             className="mb-0 text-muted"

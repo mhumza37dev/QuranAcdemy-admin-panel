@@ -368,62 +368,6 @@ function AssignPermissions(props) {
                          */}
                         <Media>
                           <span className="mb-0 text-sm">
-                            <>{"Permisssions"}</>
-                          </span>
-                        </Media>
-                      </Media>
-                    </th>
-                    {permissionModule !== undefined &&
-                      permissionModule.map((item) => (
-                        <td>
-                          <input
-                            className="custom-control-input"
-                            id={item.id}
-                            type="checkbox"
-                            onClick={() => {
-                              var checkedValue = document.getElementById(
-                                item.id
-                              );
-                              if (checkedValue.checked) {
-                                if (
-                                  !assignedPermissios.perms.includes(item.id)
-                                ) {
-                                  setAssignedPermissios((prevState) => ({
-                                    perms: [...prevState.perms, item.id],
-                                  }));
-                                }
-                              } else if (!checkedValue.checked) {
-                                setAssignedPermissios((prevState) => ({
-                                  perms: [
-                                    ...prevState.perms.filter(
-                                      (i) => i !== item.id
-                                    ),
-                                  ],
-                                }));
-                              }
-                            }}
-                          />
-                          <label
-                            className="custom-control-label"
-                            htmlFor={item.id}
-                            style={{ marginLeft: "40px" }}
-                          >
-                            <span className="text">{item.Name}</span>
-                          </label>
-                        </td>
-                      ))}
-                  </tr>
-
-                  <tr>
-                    <th
-                      scope="row"
-                      // style={{ borderRight: "1px solid #dddddd" }}
-                    >
-                      <Media className="align-items-center">
-                        {/* <h1>hamza<h1
-                         */}
-                        <Media>
-                          <span className="mb-0 text-sm">
                             <>{"Roles"}</>
                           </span>
                         </Media>

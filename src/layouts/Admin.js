@@ -98,7 +98,8 @@ const Admin = (props) => {
           <AdminNavbar
             {...props}
             brandText={getBrandText(props.location.pathname)}
-            name={name.account.firstName}
+            name={name.account.account.firstName}
+            image={name.account.account.image}
           />
           <Switch>
             {getRoutes(routes)}

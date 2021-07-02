@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
+import axios from "axios";
 
 import {
   Badge,
@@ -48,16 +49,17 @@ const Settings = (props) => {
   useMemo(() => setCurrentAdmin(JSON.parse(localStorage.getItem("user"))), []);
 
   const addSettings = () => {
-    const formData = new FormData();
+    setLoading(true);
+    let formData = new FormData();
 
     formData.append("company_name", companyName);
     formData.append("company_email", companyEmail);
     formData.append("company_phone", companyPhone);
     formData.append("company_address", companyAddress);
     formData.append("facebook_url", facebookUrl);
+    // formData.append("linkedin_url", linkedinUrl);
     formData.append("twitter_url", twitterUrl);
     formData.append("youtube_url", youtubeUrl);
-    formData.append("linkedin_url", linkedinUrl);
     formData.append("logo", logo);
 
     // for (var data of formData) {
@@ -65,18 +67,40 @@ const Settings = (props) => {
     // }
     // console.log(formData.values);
 
-    fetch("", {
-      method: "GET",
-      dataType: "JSON",
+    // axios
+    //   .post("https://quran-server.herokuapp.com/admin/setting/add", formData, {
+    //     mode
+    //     headers: {
+    //       Authorization: `Bearer ${currentAdmin.account.jwtToken}`,
+    //       "Content-type":
+    //         "multipart/form-data; boundary=<calculated when request is sent>",
+    //       "Access-Control-Allow-Origin": "*",
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(`Success` + res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log("err===>", err);
+    //   });
+
+    fetch("https://quran-server.herokuapp.com/admin/setting/add", {
+      mode: "cors",
+      method: "POST",
       headers: {
-        "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${currentAdmin.account.jwtToken}`,
+        "Access-Control-Allow-Origin": "http://localhost:3000/",
       },
       body: formData,
     })
       .then((res) => res.json())
       .then((res) => {
+        setLoading(false);
         console.log(res);
+      })
+      .catch((e) => {
+        setLoading(false);
+        console.log(e);
       });
   };
 
@@ -137,17 +161,21 @@ const Settings = (props) => {
                               placeholder="Enter Company Name"
                               type="name"
                               className="form-control"
-                              onChange={(e) => {}}
+                              onChange={(e) => {
+                                setCompanyName(e.target.value);
+                              }}
                             />
                           </div>
 
                           <div className="col-12  col-lg-6 col-md-6 form-group">
                             <label htmlFor="Name">Company Email</label>
                             <input
-                              placeholder="enter Company Email"
+                              placeholder="Enter Company Email"
                               type="name"
                               className="form-control"
-                              onChange={(e) => {}}
+                              onChange={(e) => {
+                                setCompanyEmail(e.target.value);
+                              }}
                             />
                           </div>
 
@@ -157,7 +185,9 @@ const Settings = (props) => {
                               placeholder="Enter Company Phone #"
                               type="name"
                               className="form-control"
-                              onChange={(e) => {}}
+                              onChange={(e) => {
+                                setCompanyPhone(e.target.value);
+                              }}
                             />
                           </div>
 
@@ -167,7 +197,9 @@ const Settings = (props) => {
                               placeholder="Enter Company Address"
                               type="name"
                               className="form-control"
-                              onChange={(e) => {}}
+                              onChange={(e) => {
+                                setComapanyAddress(e.target.value);
+                              }}
                             />
                           </div>
 
@@ -177,7 +209,9 @@ const Settings = (props) => {
                               placeholder="Enter Company Facebook"
                               type="name"
                               className="form-control"
-                              onChange={(e) => {}}
+                              onChange={(e) => {
+                                setFacebookUrl(e.target.value);
+                              }}
                             />
                           </div>
 
@@ -187,7 +221,9 @@ const Settings = (props) => {
                               placeholder="Enter Company Twitter"
                               type="name"
                               className="form-control"
-                              onChange={(e) => {}}
+                              onChange={(e) => {
+                                setTwitterUrl(e.target.value);
+                              }}
                             />
                           </div>
 
@@ -197,7 +233,9 @@ const Settings = (props) => {
                               placeholder="Enter Company YouTube"
                               type="name"
                               className="form-control"
-                              onChange={(e) => {}}
+                              onChange={(e) => {
+                                setYouTubeUrl(e.target.value);
+                              }}
                             />
                           </div>
 
@@ -207,7 +245,9 @@ const Settings = (props) => {
                               placeholder="Enter Company LinkedIn"
                               type="name"
                               className="form-control"
-                              onChange={(e) => {}}
+                              onChange={(e) => {
+                                setLinkedinUrl(e.target.value);
+                              }}
                             />
                           </div>
 
